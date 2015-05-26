@@ -6,6 +6,60 @@ body {
   text-align: center;
 }
 
+
+
+
+
+
+
+/* Demos - Carousel
+-------------------------------------------------- */
+
+#carouselContainer{
+	display:inline-block;
+	overflow:hidden;
+	max-width:100%;
+}
+
+#carouselWrapper{
+	display:inline-block;
+  width:100%;
+  height: 100%;
+  font-size:0pt;
+  margin:0px;
+}
+
+#carouselWrapper > .slide{
+	width:100%;
+  max-width:250px;
+  max-width:100%;
+	height:100%;
+	display:inline-block;
+	font-size:0pt;
+}
+
+#carouselWrapper > .slide > img {
+	display:inline-block;
+	width: 100%;
+  height: 100%;
+  font-size:0pt;
+}
+
+/* ----------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
