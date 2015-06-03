@@ -1,8 +1,21 @@
 var carouselIndex = 0;
 var carouselDirection = 1; // 1 right, 0 left
 var carouselLength = 2;
+var animationInProgress = false;
 
 $(document).ready(function(){
+
+  $(window).resize(function(){
+    if (! animationInProgress) {
+      calculateDimensions();
+      adjustDisplacement();
+    }
+  });
+
+  window.onload = function(){
+    document.getElementById('carouselWrapper').style.display = "inline-block";
+    calculateDimensions();
+  };
 });
 
 
@@ -20,43 +33,54 @@ var carouselInterval = window.setInterval(function() {
    		}
    		if (carouselIndex == 0) carouselDirection = 1;
    	}
-   }, 3500);
+   }, 3000);
 
 /* Slides carousel one slide to the right */
 function slideRight(){
-  var slideDistance = $('.slide').css('width');
-  $('#carouselWrapper').animate({'margin-left': '-=' + slideDistance}, 
+  var slideDistance = parseInt($('.slide').css('width'));
+  var currentPositionInt = parseInt($('#carouselWrapper').css('margin-left'));
+  var computedDistance = currentPositionInt - slideDistance;
+  var newDistance = computedDistance.toString() + 'px';
+  animationInProgress = true; /* disables resizes during slide animation */
+  $('#carouselWrapper').velocity({'margin-left': newDistance}, 
     	{duration:750,
-	     queue:true,
-       complete: adjustDisplacement /* avoids bug if window resized mid animation */
+       easing: "ease-in-out",
+       complete: animationEnd /* avoids bug if window resized mid animation */
 	});
 }
 
 /* Slides carousel one slide to the left */
 function slideLeft(){
-	var slideDistance = $('.slide').css('width');
-  $('#carouselWrapper').animate({'margin-left': '+=' + slideDistance}, 
+	var slideDistance = parseInt($('.slide').css('width'));
+  var currentPositionInt = parseInt($('#carouselWrapper').css('margin-left'));
+  var computedDistance = slideDistance + currentPositionInt;
+  var newDistance = computedDistance.toString() + 'px';
+  animationInProgress = true; /* disables resizes during slide animation */
+  $('#carouselWrapper').velocity({'margin-left': newDistance}, 
     	{duration:750,
-	     queue:true,
-       complete: adjustDisplacement /* avoids bug if window resized mid animation */
+       easing: "ease-in-out",
+       complete: animationEnd /* avoids bug if window resized mid animation */
 	});
+}
+
+/* re-enable resizing of slider after animation ends */
+function animationEnd(){
+  animationInProgress = false;
+  calculateDimensions();
+  adjustDisplacement();
 }
 
 /* Restrains slide width to container width */
 function calculateDimensions() {
   var carouselWidth = $('#carouselContainer').outerWidth();
   $('#carouselWrapper > .slide').css('width', carouselWidth);
-  $('#carouselWrapper > .slide img').css('width', carouselWidth);
-  $('#carouselWrapper').css('width', 99999999999);
+  //$('#carouselWrapper > .slide img').css('width', carouselWidth);
+  $('#carouselWrapper').css('width', 5000);
 }
 
 /* Restrains slide width to container width */
 function adjustDisplacement() {
-  var displacementRaw = parseInt($('#carouselWrapper > .slide').innerWidth()) * carouselIndex * -1;
+  var displacementRaw = parseInt($('#carouselContainer').innerWidth()) * carouselIndex * -1;
   var displacementString = displacementRaw.toString() + 'px';
   $('#carouselWrapper').css('margin-left', displacementString);
 }
-
-window.onload = calculateDimensions;
-$(window).resize(calculateDimensions);
-$(window).resize(adjustDisplacement);
