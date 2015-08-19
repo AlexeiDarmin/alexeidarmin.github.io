@@ -146,6 +146,10 @@ nav > ul > li > a:hover {
   opacity:0;
 }
 
+#portfolio > img:hover {
+  cursor:pointer;
+}
+
 @keyframes seq { 100% { opacity: 1; } }
 #portfolio > img { animation: seq .5s forwards; }
 #portfolio > img:nth-child(1) { animation-delay: .75s; }
