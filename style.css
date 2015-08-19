@@ -136,6 +136,34 @@ nav > ul > li > a:hover {
   color:#5bc0de;
 }
 
+/* Portfolio Page */
+
+#portfolio > img {
+  float:left;
+  width:48%;
+  margin:1% 1% 1% 1%;
+  box-shadow: 3px 3px 5px #888888;
+  opacity:0;
+}
+
+@keyframes seq { 100% { opacity: 1; } }
+#portfolio > img { animation: seq .5s forwards; }
+#portfolio > img:nth-child(1) { animation-delay: .75s; }
+#portfolio > img:nth-child(2) { animation-delay: 1s; }
+#portfolio > img:nth-child(3) { animation-delay: 1.25s; }
+#portfolio > img:nth-child(4) { animation-delay: 1.5s; }
+#portfolio > img:nth-child(5) { animation-delay: 1.75s; }
+#portfolio > img:nth-child(6) { animation-delay: 2s; }
+#portfolio > img:nth-child(7) { animation-delay: 2.25s; }
+#portfolio > img:nth-child(8) { animation-delay: 2.5s; }
+#portfolio > img:nth-child(9) { animation-delay: 2.75s; }
+#portfolio > img:nth-child(10) { animation-delay: 3s; }
+#portfolio > img:nth-child(11) { animation-delay: 3.25s; }
+#portfolio > img:nth-child(12) { animation-delay: 3.5s; }
+#portfolio > img:nth-child(13) { animation-delay: 3.75s; }
+#portfolio > img:nth-child(14) { animation-delay: 4s; }
+#portfolio > img:nth-child(15) { animation-delay: 4.25s; }
+
 
 
 
