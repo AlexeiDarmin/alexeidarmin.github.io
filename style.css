@@ -31,6 +31,16 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
+.footer > a > i {
+  color:black;
+  margin:0px 5px 0px 5px;
+  float:right;
+}
+
+.footer > a:hover > i {
+  color:#5bc0de;
+}
+
 /* Customize container */
 @media (min-width: 768px) {
   .container {
@@ -78,13 +88,55 @@ body {
   }
 }
 
+/* Overwriting bootstrap defaults */
+
+nav > ul > li > a {
+  color:black;
+}
+
+nav > ul > li > a:hover {
+  color:black;
+}
+
+.text-muted a {
+  color:black;
+}
+
+.text-muted a:hover {
+  color:#5bc0de;
+  text-decoration:none;
+}
+
+/* Home Page */
+
 .language > h4{
   display:inline-block;
   float:left;
-  width:110px;
+  width:140px;
   margin:0px;
 }
 
 .language > .progress{
   margin-bottom:10px;
 }
+
+/* About Page */
+
+#myTabs > li > a > i {
+  color:black;
+}
+
+#myTabs > li.active > a > i {
+  color:#5bc0de;
+}
+
+
+
+
+
+
+
+
+
+
+
