@@ -120,6 +120,12 @@ nav > ul > li > a:hover {
   margin-bottom:10px;
 }
 
+.progress-bar {
+  -webkit-transition: width 2s ease-in-out;
+  transition: width 2s ease-in-out;
+  min-width:3em;
+}
+
 /* About Page */
 
 #myTabs > li > a > i {
