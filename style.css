@@ -77,3 +77,14 @@ body {
     border-bottom: 0;
   }
 }
+
+.language > h4{
+  display:inline-block;
+  float:left;
+  width:110px;
+  margin:0px;
+}
+
+.language > .progress{
+  margin-bottom:10px;
+}
