@@ -1,24 +1,29 @@
-$(document).ready(function(){
-	var carouselFade = new FadingCarousel();
-	carouselFade.nextSlide();
-})
+/* Globals */
+var SPEED = 1500;
+var fadingCarouselIndex = 1;
 
-// The object with a default index (representing current slide)
-function FadingCarousel() {
-    this.index = 0;
-    clean(document.getElementById('fadingCarousel'))
-    this.carousel = document.getElementById('fadingCarousel');
-    this.slides = this.carousel.childNodes;
+
+
+$(document).ready(function(){
+	clean(document);
+	initEverything();
+});
+
+function initEverything(){
+	setInterval(function () {fadingCarousel();},4000);
 }
 
-// Carousel Functions
-FadingCarousel.prototype = {
-    nextSlide: function(){
-    	this.slides[this.index].style.opacity=0;
-    	this.slides[this.index + 1].style.opacity=1;
-    }
-};
 
+function fadingCarousel(){
+	$("#fadingCarousel > .slide:nth-child("+ fadingCarouselIndex +")").fadeOut(SPEED);
+	if ($("#fadingCarousel > .slide").length == fadingCarouselIndex) {
+		fadingCarouselIndex = 1;
+	}
+	else {
+		fadingCarouselIndex = fadingCarouselIndex + 1;
+	}
+	$("#fadingCarousel > .slide:nth-child("+ fadingCarouselIndex +")").fadeIn(SPEED);
+}
 
 /* Removes junk nodes (text/comments), returning only HTML. */
 function clean(node)

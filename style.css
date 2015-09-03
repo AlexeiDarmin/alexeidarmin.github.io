@@ -192,11 +192,11 @@ nav > ul > li > a:hover {
 
 #fadingCarousel > .slide{
   position:absolute;
-  opacity:0;
+  display:none;
 }
 
 #fadingCarousel > .slide:first-child{
-  opacity:1;
+  display:block;
 }
 
 
