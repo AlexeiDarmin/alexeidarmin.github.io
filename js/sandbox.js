@@ -5,7 +5,7 @@ var fadingCarouselIndex = 1;
 
 
 $(document).ready(function(){
-	clean(document);
+	$.trim(document);
 	initEverything();
 });
 
@@ -23,27 +23,4 @@ function fadingCarousel(){
 		fadingCarouselIndex = fadingCarouselIndex + 1;
 	}
 	$("#fadingCarousel > .slide:nth-child("+ fadingCarouselIndex +")").fadeIn(SPEED);
-}
-
-/* Removes junk nodes (text/comments), returning only HTML. */
-function clean(node)
-{
-  for(var n = 0; n < node.childNodes.length; n ++)
-  {
-    var child = node.childNodes[n];
-    if
-    (
-      child.nodeType === 8 
-      || 
-      (child.nodeType === 3 && !/\S/.test(child.nodeValue))
-    )
-    {
-      node.removeChild(child);
-      n --;
-    }
-    else if(child.nodeType === 1)
-    {
-      clean(child);
-    }
-  }
 }
