@@ -190,6 +190,12 @@ nav > ul > li > a:hover {
   background-image:url(images/sandbox/dog.jpg);
 }
 
+#fadingCarousel {
+  overflow: hidden;
+  position: relative;
+  height: 400px;
+}
+
 #fadingCarousel > .slide{
   position:absolute;
   display:none;
@@ -197,6 +203,23 @@ nav > ul > li > a:hover {
 
 #fadingCarousel > .slide:first-child{
   display:block;
+}
+
+
+#fadingCarousel > button {
+  position:absolute;
+  width:25px;
+  height:25px;
+}
+
+#fadingCarousel > button.next {
+  top:50%;
+  left:90%;
+}
+#fadingCarousel > button.previous {
+  top:50%;
+  left:calc(10% - 25px);
+  float:left;
 }
 
 
