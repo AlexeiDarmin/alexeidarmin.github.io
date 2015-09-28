@@ -109,6 +109,11 @@ nav > ul > li > a:hover {
 
 /* Home Page */
 
+.marketing h2{
+  text-align:center;
+  margin-bottom:45px;
+}
+
 .language > h4{
   display:inline-block;
   float:left;
@@ -118,6 +123,10 @@ nav > ul > li > a:hover {
 
 .language > .progress{
   margin-bottom:10px;
+}
+
+#legend > dd {
+  margin-bottom:20px;
 }
 
 /* About Page */
