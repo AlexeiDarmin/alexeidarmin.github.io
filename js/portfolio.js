@@ -4,3 +4,12 @@ $("#portfolio > img").click(function(){
         $('.modal-content').html(data);
     });
 });
+
+$(document).ready(function(){
+	var delayAmount = 500;
+	var duration = 500;
+	$.each($('#portfolio > img'), function () {
+		$(this).delay(delayAmount).fadeIn(duration);
+		delayAmount = delayAmount + 250;
+	});
+});
