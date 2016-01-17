@@ -112,16 +112,19 @@ nav > a{
 }
 
 h1{
+    font-family:'Open sans', 'sans-serif';
     text-align:center;
     margin-top:35px;
+    margin-bottom:35px;
     letter-spacing:1px;
-    font-size:24px;
+    font-size:34px;
+    line-height:0.5;
 }
 
 .support{
     color:black;
-    font-size:14px;
-    font-weight:normal;"
+    font-size:12px;
+    font-weight:normal;
 }
 
 .portfolio-item{
@@ -146,6 +149,16 @@ h1{
 
 .hidden {
     display:none;
+}
+
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('../assets/demos/welcome_card.jpg') center / cover;
+  background-color:green;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
 }
 
 
