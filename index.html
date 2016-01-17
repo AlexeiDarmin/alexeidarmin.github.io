@@ -7,6 +7,12 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!-- fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
@@ -20,7 +26,39 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+        <h1>Software Developer<br /><span class="support">Alexei Darmin</span></h1>
+
+        <nav>
+            <a href="portfolio.html" title="My Work Experience">Portfolio</a>
+            <a href="https://github.com/AlexDar" title="My Github Profile">Github</a>
+            <a href="http://stackoverflow.com/users/4725092/alexei-darmin" title="My stackoverflow Profile">stackoverflow</a>
+            <a href="sandbox.html" title="Warning! Experimental Code Ahead!">Sandbox</a>
+        </nav>
+        
+        <hr />
+
+        <!-- Textfield with Floating Label -->
+
+        <form action="#" id="search-form">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="search">
+            <label class="mdl-textfield__label" for="search">Search Portfolio</label>
+          </div>
+        </form>
+
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp portfolio-item">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Premier Theaters</h2>
+          </div>
+          <div class="mdl-card__supporting-text">
+            Laravel 5, MySQL, Material Design, JavaScript
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Details
+            </a>
+          </div>
+        </div>
 
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
