@@ -1,5 +1,5 @@
 /*
- | Search related code
+ | Start of search
 */
 
 var dictionary = ["HTML", "CSS3", "JavaScript", "PHP", "Python", "MySQL", "Laravel 5", "SailsJS"];
@@ -16,7 +16,7 @@ function search(){
 			}
 		}
 		if (results.length > 0){
-			displayResults(results);
+			displayResults(results, query);
 		} else {
 			$('#search-results').addClass('hidden');
 		}
@@ -33,14 +33,34 @@ $("#search").focusin(function(){
     search();
 });
 
-function displayResults(results){
+function displayResults(results, query){
 	var obj = $('#search-results > tbody');
 	obj.html("");
-	var html = "";
+	var index;
+	var html;
+	var prefix;
+	var suffix;
 	for (i = 0; i < Math.min(results.length, 5); i++){
-		obj.append('<tr><td class="mdl-data-table__cell--non-numeric">'+results[i]+'</td></tr>');
+		index = -1;
+		prefix = "";
+		suffix = "";
+
+		index = results[i].toUpperCase().indexOf(query.toUpperCase());
+		if (index != 0) {
+			prefix = results[i].substring(0, index);
+		}
+
+		if (index + query.length <= results[i].length){
+			suffix = results[i].substring(index + query.length, results[i].length);
+		}
+
+		html = prefix + '<span class="highlight">' + results[i].substring(index, index + query.length) + '</span>' + suffix;
+		obj.append('<tr><td class="mdl-data-table__cell--non-numeric">'+html+'</td></tr>');
 	}
 }
+/*
+ | End of search
+*/
 
 /*
  | Delayed event handler so value is present when requested by the search function.

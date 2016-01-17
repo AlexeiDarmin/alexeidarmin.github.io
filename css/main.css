@@ -151,6 +151,11 @@ h1{
     display:none;
 }
 
+.highlight {
+    font-weight:bolder;
+    color:red;
+}
+
 .demo-card-wide > .mdl-card__title {
   color: #fff;
   height: 176px;
@@ -161,7 +166,11 @@ h1{
   color: #fff;
 }
 
-
+.mdl-card__supporting-text{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 
 
