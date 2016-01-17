@@ -39,12 +39,22 @@
 
         <!-- Textfield with Floating Label -->
 
-        <form action="#" id="search-form">
+        <form action="#" id="search-form" autocomplete="off">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="search">
-            <label class="mdl-textfield__label" for="search">Search Portfolio</label>
+            <label class="mdl-textfield__label" for="search">Search Portfolio (ie. CSS)</label>
           </div>
+
+          <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp hidden" id="search-results">
+            <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">Example</td>
+              </tr>
+            </tbody>
+          </table>
         </form>
+
+        <div style="display:block; width:5px; height:75px;"></div>
 
         <div class="demo-card-wide mdl-card mdl-shadow--2dp portfolio-item">
           <div class="mdl-card__title">

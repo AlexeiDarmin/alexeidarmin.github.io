@@ -129,13 +129,24 @@ h1{
 }
 
 #search-form{
-    display:block;
-    margin:auto;
+    z-index:100;
+    position:absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
     width:250px;
 }
 
+#search-results{
+    margin:auto;
+    margin-top: -21px;
+    width: 250px;
+}
 
-
+.hidden {
+    display:none;
+}
 
 
 
