@@ -94,8 +94,102 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+body{
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Raleway', sans-serif;
+    margin:0px;
+    padding:0px;
+}
+
+#container{
+    max-width:1024px;
+    margin:auto;
+}
+
+#headerContainer{
+    padding-top:40px;
+    margin:0px;
+    background-color: #3498DB;
+    min-height:175px;
+}
+
+#site-Header{
+    margin-top:0px;
+    color:white;
+    text-align:center;
+    font-size:44px;
+}
+
+#site-Header2{
+    color:white;
+    font-size:21px;
+    text-align:center;
+    margin-top:-15px;
+}
+
+.header-helper{
+    font-family: 'Courgette', cursive;
+    font-size:22px;
+    display:block;
+    text-align:center;
+    font-style:italic;
+    margin:100px auto 40px auto;
+}
+
+.block-Group{
+    font-size:0px; /* margin bug fix */
+}
+.block{
+    display:inline-block;
+    background:#86FF8F;
+    width:48%;
+    margin:1%;
+    min-height:100px;
+    box-shadow:3px 3px 3px #888888;
+}
+
+#tabs{
+    display:block;
+    width:100%;
+    font-size:0px;  /* white space bux fix */
+    border-bottom:1px solid black;
+    border-top:1px solid black;
+    margin-bottom:20px;
+    padding:0px;
+}
+
+#tabs > li {
+    display:inline-block;
+    font-family: 'Slabo 27px', serif;
+    width:33.33%;
+    margin:0px;
+    font-size:24px;
+    text-align:center;
+    cursor:pointer;
+    padding:5px 0px;
+}
+
+.selectedTab{
+    background:#3FFF00;
+}
 
 
+
+/* Medium sized screen adjustments */
+@media only screen and (max-width: 800px) { 
+
+}
+
+/* Small sized screen adjustments */
+@media only screen and (max-width: 600px) { 
+    #site-Header{
+        font-size:22px;
+    }
+
+    .header-helper{
+        font-size:18px;
+    }
+}
 
 
 
