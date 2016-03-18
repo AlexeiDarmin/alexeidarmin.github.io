@@ -94,83 +94,16 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-body{
-    font-family:'Open sans', 'sans-serif';
-}
 
-nav{
-    display:block;
-    margin:auto;
-    text-align:center;
-}
 
-nav > a{
-    letter-spacing:0.5px;
-    color:black;
-    text-decoration:none;
-    margin:0px 10px;
-}
 
-h1{
-    font-family:'Open sans', 'sans-serif';
-    text-align:center;
-    margin-top:35px;
-    margin-bottom:35px;
-    letter-spacing:1px;
-    font-size:34px;
-    line-height:0.5;
-}
 
-.support{
-    color:black;
-    font-size:12px;
-    font-weight:normal;
-}
 
-.portfolio-item{
-    margin:auto;
-}
 
-#search-form{
-    z-index:100;
-    position:absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    width:250px;
-}
 
-#search-results{
-    margin:auto;
-    margin-top: -21px;
-    width: 250px;
-}
 
-.hidden {
-    display:none;
-}
 
-.highlight {
-    font-weight:bolder;
-    color:red;
-}
 
-.demo-card-wide > .mdl-card__title {
-  color: #fff;
-  height: 176px;
-  background: url('../assets/demos/welcome_card.jpg') center / cover;
-  background-color:green;
-}
-.demo-card-wide > .mdl-card__menu {
-  color: #fff;
-}
-
-.mdl-card__supporting-text{
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
 
 
 
