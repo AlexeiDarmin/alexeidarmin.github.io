@@ -122,9 +122,8 @@ body{
 
 #site-Header2{
     color:white;
-    font-size:1.2em;
+    font-size:0.8em;
     text-align:center;
-    margin-top:-15px;
 }
 
 .header-helper{
@@ -455,6 +454,7 @@ a{
 
 .post-header{
   color:black!important;
+  margin-bottom:0px;
 }
 
 .post-subheader{
@@ -478,4 +478,11 @@ a{
 
 .image-text{
   font-size:0.75em;
+}
+
+.post-date-title{
+  display:block;
+  width:100%;
+  text-align:center;
+  font-size:1.2em;
 }
