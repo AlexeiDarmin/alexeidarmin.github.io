@@ -109,12 +109,12 @@ body{
 #headerContainer{
     padding-top:40px;
     margin:0px;
-    background-color: #34db49;
+    background-color: black;
     min-height:150px;
 }
 
 #site-Header{
-    margin-top:0px;
+    margin:0px auto;
     color:white;
     text-align:center;
     font-size:44px;
@@ -122,7 +122,7 @@ body{
 
 #site-Header2{
     color:white;
-    font-size:0.8em;
+    font-size:1.2em;
     text-align:center;
 }
 
@@ -183,9 +183,8 @@ body{
   line-height: 2;
   text-align: center;
   color: white;
-  background: #34db49;
   margin-bottom: 10px;
-  border-bottom: 1px solid #34db49;
+  background: black;
 }
 
 .post-link{
@@ -209,6 +208,12 @@ body{
   display:block;
   text-align:center;
   width:100%;
+  -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none;   /* Chrome/Safari/Opera */
+-khtml-user-select: none;    /* Konqueror */
+-moz-user-select: none;      /* Firefox */
+-ms-user-select: none;       /* Internet Explorer/Edge */
+user-select: none;
 }
 
 .post-date{
@@ -216,6 +221,13 @@ body{
   display:block;
   text-align:center;
   width:100%;
+  -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none;   /* Chrome/Safari/Opera */
+-khtml-user-select: none;    /* Konqueror */
+-moz-user-select: none;      /* Firefox */
+-ms-user-select: none;       /* Internet Explorer/Edge */
+user-select: none;
+margin-bottom:20px;
 }
 
 .float-left{
