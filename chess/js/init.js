@@ -9,23 +9,25 @@ var board,
 var onDragStart = function(source, piece, position, orientation) {
   if (game.in_checkmate() === true || game.in_draw() === true)
     return false
-  //  ||
-  //   piece.search(/^b/) !== -1) {
-  //   return false;
-  // }
 };
 
 var makeRandomMove = function() {
   var possibleMoves = game.moves();
-
   console.log(possibleMoves)
-
   // game over
   if (possibleMoves.length === 0) return;
 
-  var randomIndex = Math.floor(Math.random() * possibleMoves.length);
-  game.move(possibleMoves[randomIndex]);
+  if (history[game.fen()]){
+    console.log('known')
+    game.move(history[game.fen()])
+  } else {
+    console.log('unkown')
+    var randomIndex = Math.floor(Math.random() * possibleMoves.length);
+    game.move(possibleMoves[randomIndex]);
+  }
   board.position(game.fen());
+  updateStatus();
+
 };
 
 let history = JSON.parse(localStorage.getItem('history')) || {};
@@ -45,29 +47,27 @@ var onDrop = function(source, target) {
   // illegal move
   if (move === null) return 'snapback';
 
-  updateStatus();
-
-  let newBoard = game.fen();
-  history[currentBoard] = newBoard;
+  history[currentBoard] = move;
   localStorage.setItem('history', JSON.stringify(history));
 
   console.log(history);
 
-  // make random legal move for black
-  if (history[newBoard]) {
-    board.position(game.fen())
-  } else {
-    window.setTimeout(makeRandomMove, 250);
-  }
+  window.setTimeout(makeRandomMove, 250);
+
+  updateStatus();
+
 };
 
 var updateStatus = function() {
-  console.log(localStorage.getItem('history'))
+  // console.log(JSON.parse(localStorage.getItem('history')))
+  // console.log(game.history())
   var status = '';
 
-  var moveColor = 'White';
+  let moveColor
   if (game.turn() === 'b') {
     moveColor = 'Black';
+  } else {
+    moveColor = 'White'
   }
 
   // checkmate?
@@ -110,6 +110,9 @@ var cfg = {
 };
 
 board = ChessBoard('board', cfg);
-updateStatus();
 
-if(Math.round(Math.random())) makeRandomMove();
+if(Math.round(Math.random())) {
+  window.setTimeout(makeRandomMove, 250);
+}
+
+updateStatus();
