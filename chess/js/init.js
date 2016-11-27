@@ -1,4 +1,8 @@
-// import * from 'standard.js'
+var board,
+  game = new Chess(),
+  statusEl = $('#status'),
+  fenEl = $('#fen'),
+  pgnEl = $('#pgn');
 
 
 // Given a fen string, returns the material value for both players as ints.
@@ -15,7 +19,6 @@ let getMaterialValue = (fen) => {
 
   let distance = fen.length
   if (fen.indexOf(' ') >= 0) distance = fen.indexOf(' ')
-
 
   let whiteValue = 0
   let blackValue = 0
@@ -36,13 +39,6 @@ let getMaterialValue = (fen) => {
   }
 }
 
-
-var board,
-  game = new Chess(),
-  statusEl = $('#status'),
-  fenEl = $('#fen'),
-  pgnEl = $('#pgn');
-
 // do not pick up pieces if the game is over
 // only pick up pieces for White
 var onDragStart = function(source, piece, position, orientation) {
@@ -50,57 +46,137 @@ var onDragStart = function(source, piece, position, orientation) {
     return false
 };
 
-let buildValidFen = (board) => {
-  return board.fen() + ' ' + game.turn() + ' KQkq - 0 1'
+let buildValidFen = (board, turn) => {
+  return board.fen() + ' ' + turn + ' KQkq - 0 1'
 }
 
-var makeRandomMove = function() {
-  var possibleMoves = game.moves();
-  // console.log("possible moves:", possibleMoves)
-  // game over
-  if (possibleMoves.length === 0) return;
+// simulates applying move 'move' to board 'simBoard'
+let getMoveResults = (move, fen) => {
+  let symGame = new Chess(fen);
+  symGame.move(move)
 
-  let moves = []
-
-  for (let i = 0; i < possibleMoves.length; ++i){
-    // initializes virtual board with same position
-    let tempBoard = new Chess(buildValidFen(board));
-
-    // makes the current move and change position accordingly
-    tempBoard.move(possibleMoves[i])
-
-    console.log(tempBoard.fen())
-    // retrieves resulting material values for each player
-    moves.push([getMaterialValue(tempBoard.fen()), tempBoard.fen()])
+  return {
+    material: getMaterialValue(symGame.fen()),
+    fen: symGame.fen(),
+    move: move
   }
+}
 
-  let optimalMove = possibleMoves[0]
+let findOptimalMove = (moves, possibleMoves) => {
+  // Initialize a random move as the default optimal move
+  let randomIndex = Math.floor(Math.random() * possibleMoves.length);
+  let optimalMove = possibleMoves[randomIndex]
   let optimalValue = 40
+
+  let turnColor = 'white'
+  if (game.turn === 'b') turnColor = 'black'
   for (let i = 1; i < moves.length; ++i){
-    if (moves[i][0].white < optimalValue){
-      optimalValue = moves[i][0].white
+    if (moves[i]['material'][turnColor] < optimalValue){
+      optimalValue = moves[i].material[turnColor]
       optimalMove = possibleMoves[i]
     }
   }
 
-  console.log(optimalMove, optimalValue)
+  console.log(optimalMove)
+
+  return {
+    move: optimalMove,
+    value: optimalValue
+  }
+}
 
 
-  console.log('moves:', moves)
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+var makeMove = function() {
+  let possibleMoves = shuffle(game.moves())
+
+  // game over
+  if (possibleMoves.length === 0) return;
+
   // if (history[game.fen()]){
   //   console.log('known')
   //   game.move(history[game.fen()])
   // } else {
-  console.log('unkown')
-  // var randomIndex = Math.floor(Math.random() * possibleMoves.length);
-  game.move(optimalMove);
+
+  let moves = []
+
+  for (let i = 0; i < possibleMoves.length; ++i) {
+    moves.push(getMoveResults(possibleMoves[i], buildValidFen(board, 'b')))
+  }
+
+  console.log("moves: ", moves)
+
+  let counterMoves = {}
+  for (let i = 0; i < moves.length; ++i){
+    let symGame = new Chess(moves[i].fen)
+    let simMoves = symGame.moves()
+
+    for (let j = 0; j < simMoves.length; ++j){
+      if (!counterMoves[moves[i].move]) {
+        counterMoves[moves[i].move] = []
+      }
+      counterMoves[moves[i].move].push(getMoveResults(simMoves[j], moves[i].fen))
+    }
+  }
+
+  // want to find the best worst-case scenario
+  let worstCaseMoves = {};
+  for (let key in counterMoves) {
+    if (counterMoves.hasOwnProperty(key)) {
+      let bestCounterMove = ''
+      let worstDelta = 0
+
+      for (let i = 0; i < counterMoves[key].length; ++i){
+        let delta = counterMoves[key][i]['material']['black'] - counterMoves[key][i]['material']['white']
+
+        if (delta <= worstDelta){
+          worstDelta = delta
+          bestCounterMove = key
+        }
+      }
+
+      worstCaseMoves[key] = worstDelta
+    }
+  }
+
+  let bestMove = ''
+  let leastWorstCaseDelta = -Infinity
+  for (let key in worstCaseMoves) {
+    if (counterMoves.hasOwnProperty(key)) {
+      if (worstCaseMoves[key] > leastWorstCaseDelta){
+        leastWorstCaseDelta = worstCaseMoves[key]
+        bestMove = key
+      }
+    }
+  }
+
+
+  console.log('worst: ', worstCaseMoves)
+  // console.log("counterMoves: ", counterMoves)
+  // console.log("optMove then optDelta: ", Move, wors)
+
+  game.move(bestMove);
   // }
   board.position(game.fen());
   updateStatus();
-
-  console.log('fen: ', game.fen())
-  console.log('material value: ', getMaterialValue(game.fen()))
-
 };
 
 let history = JSON.parse(localStorage.getItem('history')) || {};
@@ -123,9 +199,7 @@ var onDrop = function(source, target) {
   history[currentBoard] = move;
   localStorage.setItem('history', JSON.stringify(history));
 
-  console.log(history);
-
-  window.setTimeout(makeRandomMove, 250);
+  window.setTimeout(makeMove, 250);
 
   updateStatus();
 
@@ -185,7 +259,7 @@ var cfg = {
 board = ChessBoard('board', cfg);
 
 // if(Math.round(Math.random())) {
-//   window.setTimeout(makeRandomMove, 250);
+//   window.setTimeout(makeMove, 250);
 // }
 
 updateStatus();
