@@ -1,8 +1,8 @@
-var board,
-  game = new Chess(),
-  statusEl = $('#status'),
-  fenEl = $('#fen'),
-  pgnEl = $('#pgn');
+let board
+let game = new Chess()
+let statusEl = $('#status')
+let fenEl = $('#fen')
+let pgnEl = $('#pgn')
 
 
 // Given a fen string, returns the material value for both players as ints.
@@ -108,75 +108,140 @@ function shuffle(array) {
   return array;
 }
 
-var makeMove = function() {
-  let possibleMoves = shuffle(game.moves())
+let buildGameTree = (fen, depth) => {
+  let symGame = new Chess(fen)
+  let possibleMoves = shuffle(symGame.moves())
+  let turn
+  if (fen.indexOf(' b ') >= 0) {
+    turn = 'b'
+  } else {
+    turn = 'w'
+  }
 
-  // game over
   if (possibleMoves.length === 0) return;
 
-  let moves = []
-  let dictMoves = {}
+  let moves = {}
+
 
   for (let i = 0; i < possibleMoves.length; ++i) {
-    let moveResult = getMoveResults(possibleMoves[i], buildValidFen(board, 'b'))
-    moves.push(moveResult)
-    dictMoves[possibleMoves[i]] = moveResult
-  }
-
-  console.log("dictMoves: ", dictMoves)
-
-  let counterMoves = {}
-  for (let i = 0; i < moves.length; ++i){
-    let symGame = new Chess(moves[i].fen)
-    let simMoves = symGame.moves()
-
-    for (let j = 0; j < simMoves.length; ++j){
-      if (!counterMoves[moves[i].move]) {
-        counterMoves[moves[i].move] = []
-      }
-      counterMoves[moves[i].move].push(getMoveResults(simMoves[j], moves[i].fen))
+    moves[possibleMoves[i]] = getMoveResults(possibleMoves[i], fen)
+    if (depth > 0) {
+      let nextFen = moves[possibleMoves[i]]['fen']
+      moves[possibleMoves[i]].responses = buildGameTree(nextFen, depth - 1)
     }
   }
 
-  console.log('counter: ', counterMoves)
-  // want to find the best worst-case scenario
-  let worstCaseMoves = {};
-  for (let key in counterMoves) {
-    if (counterMoves.hasOwnProperty(key)) {
-      let bestCounterMove = ''
-      let worstDelta = 100
+  return moves
+}
 
-      for (let i = 0; i < counterMoves[key].length; ++i){
-        let blackMaterial = counterMoves[key][i]['material']['black']
-        let blackPositional = getPositionalValue(counterMoves[key][i]['fen'])
-        let whiteMaterial = counterMoves[key][i]['material']['white']
-        let whitePositional = getPositionalValue(dictMoves[key]['fen'])
+let getWorstCase = (gameTree, rootMove = true) => {
+  let responses
+  if (gameTree['responses']) {
+    responses = gameTree['responses']
+  } else if (!gameTree['material']){
+    responses = gameTree
+  }
 
-        let delta = blackMaterial + blackPositional - whiteMaterial - whitePositional
+  // Base case, final child leafs of tree
+  if (!responses && gameTree['material']) {
+    return gameTree['material']['black'] - gameTree['material']['white']
+  }
 
-        if (delta <= worstDelta){
-          worstDelta = delta
-          bestCounterMove = key
+  let deltas = []
+
+  // For each possible response
+  for (let move in responses) {
+    // Collect worst case for this response
+    if (responses.hasOwnProperty(move)) {
+        let delta = getWorstCase(responses[move], false)
+        // console.log(delta)
+
+        // Multiple types of returns have to be handled, this unifies data types
+        if (delta['delta'] !== undefined) {
+          deltas.push({
+            delta: delta['delta'],
+            move: move
+          })
+        } else {
+          deltas.push({
+            delta: delta,
+            move: move
+          })
         }
-      }
-
-      worstCaseMoves[key] = worstDelta
     }
   }
+  // console.log(deltas)
+  // return Math.min.apply(null, deltas)
 
-  console.log('worst: ', worstCaseMoves)
-  let bestMove = ''
-  let leastWorstCaseDelta = -Infinity
-  for (let key in worstCaseMoves) {
-    if (counterMoves.hasOwnProperty(key)) {
-      if (worstCaseMoves[key] > leastWorstCaseDelta){
-        leastWorstCaseDelta = worstCaseMoves[key]
-        bestMove = key
-      }
-    }
+  // For all children return the lowest possible deltas
+  // For root node return the highest (meaning the highest minimum)
+  if (rootMove) {
+    return deltas.reduce(function(d1, d2) {
+        return d1.delta > d2.delta ? d1 : d2;
+      })
+  } else {
+    return deltas.reduce(function(d1, d2) {
+        return d1.delta < d2.delta ? d1 : d2;
+      })
   }
+}
 
-  game.move(bestMove);
+var makeMove = function() {
+  let fen = buildValidFen(board, 'b')
+  let gameTree = buildGameTree(fen, 2)
+
+  console.log(gameTree)
+  // console.log(gameTree)
+  // console.log("worst case: ", getWorstCase(gameTree))
+  // for (let key in moves) {
+  //    if (moves.hasOwnProperty(key)) {
+  //      let parent = key
+  //      let variations = moves[key]['responses']
+  //      while (moves[key]['responses']) {
+  //
+  //      }
+  //    }
+  // }
+  //
+
+  // want to find the best worst-case scenario
+  // let worstCaseMoves = {};
+  // for (let key in counterMoves) {
+  //   if (counterMoves.hasOwnProperty(key)) {
+  //     let bestCounterMove = ''
+  //     let worstDelta = 100
+  //
+  //     for (let i = 0; i < counterMoves[key].length; ++i){
+  //       let blackMaterial = counterMoves[key][i]['material']['black']
+  //       let blackPositional = getPositionalValue(counterMoves[key][i]['fen'])
+  //       let whiteMaterial = counterMoves[key][i]['material']['white']
+  //       let whitePositional = getPositionalValue(dictMoves[key]['fen'])
+  //
+  //       let delta = blackMaterial + blackPositional - whiteMaterial - whitePositional
+  //
+  //       if (delta <= worstDelta){
+  //         worstDelta = delta
+  //         bestCounterMove = key
+  //       }
+  //     }
+  //
+  //     worstCaseMoves[key] = worstDelta
+  //   }
+  // }
+  //
+  // console.log('worst: ', worstCaseMoves)
+  // let bestMove = ''
+  // let leastWorstCaseDelta = -Infinity
+  // for (let key in worstCaseMoves) {
+  //   if (counterMoves.hasOwnProperty(key)) {
+  //     if (worstCaseMoves[key] > leastWorstCaseDelta){
+  //       leastWorstCaseDelta = worstCaseMoves[key]
+  //       bestMove = key
+  //     }
+  //   }
+  // }
+
+  game.move(getWorstCase(gameTree)['move']);
   board.position(game.fen());
   updateStatus();
 };
