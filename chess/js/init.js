@@ -34,6 +34,13 @@ let getMaterialValue = (fen) => {
     }
   }
 
+  return {
+    'white' : whiteValue,
+    'black' : blackValue
+  }
+}
+
+let getPositionalValue = (fen) => {
   // Computes added 'potential' value
   // pieces that have many possible moves are more valuable
   let symGame = new Chess(fen)
@@ -52,15 +59,11 @@ let getMaterialValue = (fen) => {
   for(let i = 0; i < moves.length; ++i) {
     let c = moves[i][0]
     if (symValues[c] < 1) {
-      symValues[c] += 1/9
+      symValues[c] += 1/8
     }
   }
 
-  return {
-    'white' : whiteValue,
-    'black' : blackValue,
-    'extra' : symValues['R'] + symValues['N'] + symValues['B']
-  }
+  return symValues['N'] + symValues['B']
 }
 
 // do not pick up pieces if the game is over
@@ -112,12 +115,15 @@ var makeMove = function() {
   if (possibleMoves.length === 0) return;
 
   let moves = []
+  let dictMoves = {}
 
   for (let i = 0; i < possibleMoves.length; ++i) {
-    moves.push(getMoveResults(possibleMoves[i], buildValidFen(board, 'b')))
+    let moveResult = getMoveResults(possibleMoves[i], buildValidFen(board, 'b'))
+    moves.push(moveResult)
+    dictMoves[possibleMoves[i]] = moveResult
   }
 
-  console.log("moves: ", moves)
+  console.log("dictMoves: ", dictMoves)
 
   let counterMoves = {}
   for (let i = 0; i < moves.length; ++i){
@@ -132,6 +138,7 @@ var makeMove = function() {
     }
   }
 
+  console.log('counter: ', counterMoves)
   // want to find the best worst-case scenario
   let worstCaseMoves = {};
   for (let key in counterMoves) {
@@ -140,8 +147,12 @@ var makeMove = function() {
       let worstDelta = 100
 
       for (let i = 0; i < counterMoves[key].length; ++i){
-        let black = counterMoves[key][i]['material']['black'] + counterMoves[key][i]['material']['extra']
-        let delta = black - counterMoves[key][i]['material']['white']
+        let blackMaterial = counterMoves[key][i]['material']['black']
+        let blackPositional = getPositionalValue(counterMoves[key][i]['fen'])
+        let whiteMaterial = counterMoves[key][i]['material']['white']
+        let whitePositional = getPositionalValue(dictMoves[key]['fen'])
+
+        let delta = blackMaterial + blackPositional - whiteMaterial - whitePositional
 
         if (delta <= worstDelta){
           worstDelta = delta
