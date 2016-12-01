@@ -8,7 +8,7 @@ let pgnEl = $('#pgn')
 // Given a fen string, returns the material value for both players as ints.
 // [white, black]
 let getMaterialValue = (fen) => {
-  let values = {
+  const values = {
     'Q' : 9,
     'R' : 5,
     'N' : 3,
@@ -16,36 +16,33 @@ let getMaterialValue = (fen) => {
     'P' : 1
   }
 
-  // BoardJS provides an invalid fen (lacking spaces)
-  let distance = fen.length
-  if (fen.indexOf(' ') >= 0) distance = fen.indexOf(' ')
+  const distance = fen.indexOf(' ')
 
   // Computes raw material value
-  let whiteValue = 0
-  let blackValue = 0
+  const playerValues = {
+    white: 0,
+    black: 0
+  }
   for(let i = 0; i < distance; ++i) {
-    let c = fen[i].toUpperCase()
+    const c = fen[i].toUpperCase()
     if (['Q', 'R', 'N', 'B', 'P'].indexOf(c) >= 0){
       if (fen[i] === c){
-        whiteValue += values[c]
+        playerValues.white += values[c]
       } else {
-        blackValue += values[c]
+        playerValues.black += values[c]
       }
     }
   }
 
-  return {
-    'white' : whiteValue,
-    'black' : blackValue
-  }
+  return playerValues
 }
 
 let getPositionalValue = (fen) => {
   // Computes added 'potential' value
   // pieces that have many possible moves are more valuable
-  let symGame = new Chess(fen)
-  let moves = symGame.moves()
-  let symValues = {
+  const symGame = new Chess(fen)
+  const moves = symGame.moves()
+  const symValues = {
     'Q' : 0,
     'R' : 0,
     'N' : 0,
@@ -77,18 +74,6 @@ let buildValidFen = (board, turn) => {
   return board.fen() + ' ' + turn + ' KQkq - 0 1'
 }
 
-// simulates applying move 'move' to board 'simBoard'
-let getMoveResults = (move, fen) => {
-  let symGame = new Chess(fen);
-  symGame.move(move)
-
-  return {
-    material: getMaterialValue(symGame.fen()),
-    fen: symGame.fen(),
-    move: move
-  }
-}
-
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -108,143 +93,92 @@ function shuffle(array) {
   return array;
 }
 
-let buildGameTree = (fen, depth) => {
-  let symGame = new Chess(fen)
-  let possibleMoves = shuffle(symGame.moves())
-  let turn
-  if (fen.indexOf(' b ') >= 0) {
-    turn = 'b'
-  } else {
-    turn = 'w'
+var makeMove = function() {
+  console.time('mover');
+  runChessBotMove(); // run whatever needs to be timed in between the statements
+  console.timeEnd('mover');
+};
+
+let buildGameTree = (symGame, depth, worstDelta, move = '') => {
+  const possibleMoves = symGame.moves()
+  const fen = symGame.fen()
+
+  if (depth === 0) {
+    // Calculate material delta
+    const material = getMaterialValue(fen)
+
+    return {
+      fen: fen,
+      delta: material.black - material.white,
+      move: move,
+      responses: null
+    }
   }
 
-  if (possibleMoves.length === 0) return;
-
-  let moves = {}
-
+  const moves = {}
+  let currWorstDelta = 100
 
   for (let i = 0; i < possibleMoves.length; ++i) {
-    moves[possibleMoves[i]] = getMoveResults(possibleMoves[i], fen)
-    if (depth > 0) {
-      let nextFen = moves[possibleMoves[i]]['fen']
-      moves[possibleMoves[i]].responses = buildGameTree(nextFen, depth - 1)
+    const currMove = possibleMoves[i]
+    symGame.move(currMove)
+    moves[currMove] = buildGameTree(symGame, depth - 1, worstDelta, currMove)
+    symGame.undo()
+
+    // If a branch of decisions leads to a worse delta than
+    // in another branch, then stop building tree down this branch.
+    if (moves[currMove].delta < worstDelta) {
+      return {
+        fen: symGame.fen(),
+        move: currMove,
+        delta: moves[currMove].delta,
+        responses: moves
+      }
     }
+    if (moves[currMove].delta < currWorstDelta) currWorstDelta = moves[currMove].delta
   }
 
-  return moves
+  return {
+    fen: fen,
+    move: move,
+    delta: currWorstDelta,
+    responses: moves
+  }
 }
 
-let getWorstCase = (gameTree, rootMove = true) => {
-  let responses
-  if (gameTree['responses']) {
-    responses = gameTree['responses']
-  } else if (!gameTree['material']){
-    responses = gameTree
-  }
+let getLeastWorstMove = (gameTree) => {
 
-  // Base case, final child leafs of tree
-  if (!responses && gameTree['material']) {
-    return gameTree['material']['black'] - gameTree['material']['white']
-  }
+    let optimalDecision = {
+      delta: -100
+    }
 
-  let deltas = []
-
-  // For each possible response
-  for (let move in responses) {
-    // Collect worst case for this response
-    if (responses.hasOwnProperty(move)) {
-        let delta = getWorstCase(responses[move], false)
-        // console.log(delta)
-
-        // Multiple types of returns have to be handled, this unifies data types
-        if (delta['delta'] !== undefined) {
-          deltas.push({
-            delta: delta['delta'],
-            move: move
-          })
-        } else {
-          deltas.push({
-            delta: delta,
-            move: move
-          })
+    for (var key in gameTree.responses) {
+      if (gameTree.responses.hasOwnProperty(key)) {
+        if (gameTree.responses[key].delta > optimalDecision.delta) {
+          optimalDecision = gameTree.responses[key]
         }
+      }
     }
-  }
-  // console.log(deltas)
-  // return Math.min.apply(null, deltas)
 
-  // For all children return the lowest possible deltas
-  // For root node return the highest (meaning the highest minimum)
-  if (rootMove) {
-    return deltas.reduce(function(d1, d2) {
-        return d1.delta > d2.delta ? d1 : d2;
-      })
-  } else {
-    return deltas.reduce(function(d1, d2) {
-        return d1.delta < d2.delta ? d1 : d2;
-      })
-  }
+    return optimalDecision
 }
 
-var makeMove = function() {
-  let fen = buildValidFen(board, 'b')
-  let gameTree = buildGameTree(fen, 2)
+let runChessBotMove = () => {
 
-  console.log(gameTree)
-  // console.log(gameTree)
-  // console.log("worst case: ", getWorstCase(gameTree))
-  // for (let key in moves) {
-  //    if (moves.hasOwnProperty(key)) {
-  //      let parent = key
-  //      let variations = moves[key]['responses']
-  //      while (moves[key]['responses']) {
-  //
-  //      }
-  //    }
-  // }
-  //
+  // Initilize current board
+  const fen = buildValidFen(board, 'b')
+  const symGame = new Chess(fen)
+  const moves = symGame.moves()
+  const depth = 2
 
-  // want to find the best worst-case scenario
-  // let worstCaseMoves = {};
-  // for (let key in counterMoves) {
-  //   if (counterMoves.hasOwnProperty(key)) {
-  //     let bestCounterMove = ''
-  //     let worstDelta = 100
-  //
-  //     for (let i = 0; i < counterMoves[key].length; ++i){
-  //       let blackMaterial = counterMoves[key][i]['material']['black']
-  //       let blackPositional = getPositionalValue(counterMoves[key][i]['fen'])
-  //       let whiteMaterial = counterMoves[key][i]['material']['white']
-  //       let whitePositional = getPositionalValue(dictMoves[key]['fen'])
-  //
-  //       let delta = blackMaterial + blackPositional - whiteMaterial - whitePositional
-  //
-  //       if (delta <= worstDelta){
-  //         worstDelta = delta
-  //         bestCounterMove = key
-  //       }
-  //     }
-  //
-  //     worstCaseMoves[key] = worstDelta
-  //   }
-  // }
-  //
-  // console.log('worst: ', worstCaseMoves)
-  // let bestMove = ''
-  // let leastWorstCaseDelta = -Infinity
-  // for (let key in worstCaseMoves) {
-  //   if (counterMoves.hasOwnProperty(key)) {
-  //     if (worstCaseMoves[key] > leastWorstCaseDelta){
-  //       leastWorstCaseDelta = worstCaseMoves[key]
-  //       bestMove = key
-  //     }
-  //   }
-  // }
+  let gameTree = buildGameTree(symGame, depth, -100)
+  console.log('after all: ', gameTree)
+  let bestMove = getLeastWorstMove(gameTree)
 
-  game.move(getWorstCase(gameTree)['move']);
+  game.move(bestMove.move)
+
   board.position(game.fen());
   updateStatus();
-};
+}
 
 let history = JSON.parse(localStorage.getItem('history')) || {};
 // history = {};
