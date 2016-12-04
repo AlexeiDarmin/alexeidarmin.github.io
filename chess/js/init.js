@@ -3,98 +3,6 @@ let game = new Chess()
 let statusEl = $('#status')
 let fenEl = $('#fen')
 let pgnEl = $('#pgn')
-let transpositionTable = {}
-
-let runNewChessBot = () => {
-  // Initilize current board
-  const fen = buildValidFen(board, 'b')
-  const symGame = new Chess(fen)
-  const moves = symGame.moves()
-
-  let gameTree = buildGameTree(symGame, depth, -100)
-  console.log(MTDF(gameTree, 2, 2))
-}
-
-/*
-  MTD(f) Implementation inspired by : https://people.csail.mit.edu/plaat/mtdf.html#abmem
-  inputs:
-    root: node_type,
-    f   : integer,
-    d   : integer
-  output: integer
-*/
-let MTDF = (root, f, d) => {
-  let g = f
-  let upperBound = Infinity
-  let lowerBound = -Infinity
-
-  while (lowerBound < upperBound) {
-    let b = Math.max(g, lowerBound + 1)
-    g = AlphaBetaWithMemory(root, b - 1, b, d)
-    if (g < b) upperBound = g
-    else lowerBound = g
-  }
-  return g
-}
-
-let AlphaBetaWithMemory = (n, alpha, beta, d) => {
-  /* Transposition table lookup */
-  if (transpositionTable(n.fen())) {
-    if (n.lowerbound >= beta) return n.lowerbound
-    if (n.upperbound <= alpha) return n.upperbound
-
-    alpha = Math.max(alpha, n.lowerbound)
-    beta = Math.min(beta, n.upperbound)
-  }
-
-  let g
-  if (d === 0) g = getMaterialDelta(n.fen()) /* leaf node */
-  else if (n === MAXNODE) {
-    g = -INFINITY
-    let a = alpha // save original alpha value
-    let c = firstchild(n)
-
-    while ((g < beta) && (c != NOCHILD)) {
-      g = Math.max(g, AlphaBetaWithMemory(c, a, beta, d - 1))
-      a = Math.max(a, g)
-      c = nextbrother(c)
-    }
-  } else {/* n is a MINNODE */
-    g = INFINITY
-    let b = beta // save original beta value
-    let c = firstchild(n)
-    while ((g > alpha) && (c != NOCHILD)) {
-      g = Math.min(g, AlphaBetaWithMemory(c, alpha, b, d - 1))
-      b = Math.min(b, g)
-      c = nextbrother(c)
-    }
-  }
-  /* Traditional transposition table storing of bounds */
-  /* Fail low result implies an upper bound */
-  if (g <= alpha) {
-    n.upperbound = g
-    transpositionTable(n.fen()) = {
-      upperbound: n.upperbound
-    }
-  }
-  /* Found an accurate minimax value - will not occur if called with zero window */
-  if ((g > alpha) && (g < beta)){
-    n.lowerbound = g
-    n.upperbound = g
-    transpositionTable(n.fen()) = {
-      lowerbound: n.lowerbound,
-      upperbound: n.upperbound
-    }
-  }
-  /* Fail high result implies a lower bound */
-  if (g >= beta) {
-    n.lowerbound = g
-    transpositionTable(n.fen()) = {
-      lowerbound: n.lowerbound
-    }
-  }
-  return g
-}
 
 
 let getPositionalDelta = (moves) => {
@@ -109,12 +17,12 @@ let getPositionalDelta = (moves) => {
   // Max is not 1 because positional advantage won't confer to a pawn sac, for now
   for(let i = 0; i < moves.length; ++i) {
     let c = moves[i][0]
-    if (symValues[c] < 1) {
-      symValues[c] += 1/8
+    if (symValues[c] < 0.9) {
+      symValues[c] += 1/10
     }
   }
 
-  return symValues['N'] + symValues['B'] + symValues['R']
+  return symValues['N'] + symValues['B']
 }
 
 
@@ -142,68 +50,89 @@ let getMaterialDelta = (fen) => {
   return delta
 }
 
-var makeMove = function() {
-  console.time('mover');
+const makeMove = function() {
+  console.time('Decision Time');
   runChessBotMove(); // run whatever needs to be timed in between the statements
-  // runNewChessBot();
-  console.timeEnd('mover');
+  console.timeEnd('Decision Time');
 };
 
-let buildGameTree = (symGame, depth, worstDelta, move = '') => {
-
+const buildGameTree = (symGame, depth, parentWorstDelta, move = '') => {
   let possibleMoves = symGame.moves()
   let fen = symGame.fen()
-  let materialValue = getMaterialDelta(symGame.fen()) + getPositionalDelta(possibleMoves)
 
-  if (depth <= 0 && depth !== -3){
-    let remainingMoves = []
-    possibleMoves.map((str) => {
-      if (str.indexOf('x') >= 0) {
-        remainingMoves.push(str)
-      }
-    })
-    console.log('before/after: ', possibleMoves, remainingMoves )
-    possibleMoves = remainingMoves
-  }
-  if (depth === -3 || possibleMoves.length === 0 || materialValue < 0) { // Terminal leaf node
-    return {
-      fen: symGame.fen(),
-      delta: materialValue,
-      move: move,
-      responses: null
-    }
+  console.log('considering: ', possibleMoves)
+
+  if (depth === 0) { // Terminal leaf node
+    const currDelta = getMaterialDelta(fen) + getPositionalDelta(possibleMoves)
+
+    return populateTree(fen, move, currDelta, null)
   }
 
   const moves = {}
-  let currWorstDelta = 100
+  let branchWorstDelta = 100
 
   for (let i = 0; i < possibleMoves.length; ++i) {
+    let captureAvailable = false
+
     const currMove = possibleMoves[i]
+
     symGame.move(currMove)
-    moves[currMove] = buildGameTree(symGame, depth - 1, worstDelta, currMove)
+
+    // If current move has a direct capture reaction, flag it.
+    let reactionMoves = symGame.moves()
+    if (reactionMoves.join().indexOf('x') > -1) captureAvailable = true
+
+    // If current move allows for an indirect capture reaction, flag it.
+    // let j = 0
+    // while (!captureAvailable && j < reactionMoves.length) {
+    //   let nextMove = reactionMoves[j]
+    //   console.log('before reaction: ', symGame.fen())
+    //   symGame.move(nextMove)
+    //   console.log('after reaction: ', symGame.fen())
+    //
+    //   reactionMovesRank2 = symGame.moves({orientation: 'w'})
+    //   console.log('after reaction moves: ', reactionMovesRank2)
+    //
+    //   if (reactionMovesRank2.join().indexOf('x') > -1) {
+    //     captureAvailable = true
+    //   }
+    //
+    //   symGame.undo()
+    //   ++j
+    // }
+
+    let currFen = symGame.fen()
+    if (captureAvailable){
+      moves[currMove] = buildGameTree(symGame, depth - 1, parentWorstDelta, currMove)
+    } else {
+      const delta = getMaterialDelta(currFen) + getPositionalDelta(currFen)
+      if (delta < branchWorstDelta) branchWorstDelta = delta
+
+      moves[currMove] = populateTree(currFen, currMove, delta, null)
+    }
+
+    if (moves[currMove].delta < parentWorstDelta){
+      symGame.undo()
+      return populateTree(currFen, currMove, moves[currMove].delta, moves)
+    }
+
+    if (moves[currMove].delta < branchWorstDelta) {
+      branchWorstDelta = moves[currMove].delta
+    }
     symGame.undo()
 
-    // If a branch of decisions leads to a worse delta than
-    // in another branch, then stop building tree down this branch.
-    if (moves[currMove].delta < worstDelta) {
-      return {
-        fen: symGame.fen(),
-        move: currMove,
-        delta: moves[currMove].delta,
-        responses: moves
-      }
-    }
-    if (moves[currMove].delta < currWorstDelta) currWorstDelta = moves[currMove].delta
   }
 
-  result = {
+  return populateTree(fen, move, branchWorstDelta, moves)
+}
+
+const populateTree = (fen, move, delta, responses) => {
+  return {
     fen: fen,
     move: move,
-    delta: currWorstDelta,
-    responses: moves
+    delta: delta,
+    responses: responses
   }
-
-  return result
 }
 
 let getLeastWorstMove = (gameTree) => {
@@ -233,19 +162,15 @@ let runChessBotMove = () => {
   const moves = symGame.moves()
 
   let gameTree = buildGameTree(symGame, depth, -100)
-  console.log('after all: ', gameTree)
   let bestMove = getLeastWorstMove(gameTree)
 
-  console.log("transp table: ", transpositionTable)
+  console.log("game tree: ", gameTree)
+
   game.move(bestMove.move)
 
   board.position(game.fen());
   updateStatus();
 }
-
-let history = JSON.parse(localStorage.getItem('history')) || {};
-// history = {};
-localStorage.setItem('history', JSON.stringify(history));
 
 var onDrop = function(source, target) {
   let currentBoard = game.fen();
@@ -259,9 +184,6 @@ var onDrop = function(source, target) {
 
   // illegal move
   if (move === null) return 'snapback';
-
-  history[currentBoard] = move;
-  localStorage.setItem('history', JSON.stringify(history));
 
   window.setTimeout(makeMove, 75);
 
