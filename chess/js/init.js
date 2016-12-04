@@ -83,23 +83,26 @@ const buildGameTree = (symGame, depth, parentWorstDelta, move = '') => {
     if (reactionMoves.join().indexOf('x') > -1) captureAvailable = true
 
     // If current move allows for an indirect capture reaction, flag it.
-    // let j = 0
-    // while (!captureAvailable && j < reactionMoves.length) {
-    //   let nextMove = reactionMoves[j]
-    //   console.log('before reaction: ', symGame.fen())
-    //   symGame.move(nextMove)
-    //   console.log('after reaction: ', symGame.fen())
-    //
-    //   reactionMovesRank2 = symGame.moves({orientation: 'w'})
-    //   console.log('after reaction moves: ', reactionMovesRank2)
-    //
-    //   if (reactionMovesRank2.join().indexOf('x') > -1) {
-    //     captureAvailable = true
-    //   }
-    //
-    //   symGame.undo()
-    //   ++j
-    // }
+    let j = 0
+    while (!captureAvailable && j < reactionMoves.length) {
+      let nextMove = reactionMoves[j]
+      console.log('before reaction: ', symGame.fen())
+      symGame.move(nextMove)
+      symGame.move(symGame.moves()[0])
+      console.log('after reaction: ', symGame.fen())
+
+      reactionMovesRank2 = symGame.moves()
+      console.log('after reaction moves: ', reactionMovesRank2)
+
+      if (reactionMovesRank2.join().indexOf('x') > -1) {
+        captureAvailable = true
+      }
+
+      symGame.undo()
+      symGame.undo()
+
+      ++j
+    }
 
     let currFen = symGame.fen()
     if (captureAvailable){
