@@ -497,14 +497,6 @@ var Chess = function(fen) {
     var them = swap_color(us);
     var second_rank = {b: RANK_7, w: RANK_2};
 
-    // if (typeof options !== 'undefined' && 'orientation' in options) {
-    //     if (us !== options.orientation) {
-    //       var temp = us;
-    //       us       = them;
-    //       them     = temp;
-    //     }
-    //   }
-
     var first_sq = SQUARES.a8;
     var last_sq = SQUARES.h1;
     var single_square = false;
