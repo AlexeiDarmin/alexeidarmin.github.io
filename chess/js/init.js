@@ -53,27 +53,36 @@ const makeMove = function () {
 let nodesVisited = 0
 
 // Applies every possible capture at position 'square'. Returns the optimal case scenario for each player.
+// color 1 = black, color 2 = white
 const staticCaptureExchange = (symGame, square, color, move) => {
-  let moves = symGame.moves().filter((move) => move.slice(-2) === square)
+  let moves = symGame.moves().filter((move) => move.indexOf('x') > -1)
   nodesVisited += moves.length
-
+  console.log(moves)
   if (moves.length === 0) { // no more captures available
-    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) * color * -1, null)
+    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) * color, null)
   }
 
   let responses = {}
 
   for (let i = 0, len = moves.length; i < len; ++i) {
     symGame.move(moves[i])
-    responses[moves[i]] = staticCaptureExchange(symGame, square, color * -1, moves[i])
+    responses[moves[i]] = staticCaptureExchange(symGame, square, color, moves[i])
     symGame.undo()
   }
 
-  let bestDelta = -Infinity
+  let bestDelta
+  if (symGame.turn() === 'b') {
+    bestDelta = -Infinity
 
-  $.each(responses, function(move, response) {
-    if (response.delta > bestDelta) bestDelta = response.delta
-  });
+    $.each(responses, function(move, response) {
+      if (response.delta > bestDelta) bestDelta = response.delta
+    });
+  } else {
+    bestDelta = Infinity
+    $.each(responses, function(move, response) {
+      if (response.delta < bestDelta) bestDelta = response.delta
+    });
+  }
 
   return new Node(symGame.fen(), move, bestDelta, responses)
 }
