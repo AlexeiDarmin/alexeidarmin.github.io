@@ -36,10 +36,10 @@ let getMaterialDelta = (fen) => {
 
   // Value of castling
   if (blackCanCastle) {
-    if (arr[0].slice(-2) === 'k1' && (arr[1].slice(-3) === 'ppp' || arr[1].slice(-3) === 'pp1' || arr[1].slice(-3) === 'p1p')) score += 1
+    if (arr[0].slice(-2) === 'k1' && (arr[1].slice(-3) === 'ppp' || arr[1].slice(-3) === 'pp1' || arr[1].slice(-3) === 'p1p')) score += 0.25
   }
   if (whiteCanCastle) {
-    if (arr[7].slice(-2) === 'K1' && (arr[6].slice(-3) === 'PPP' || arr[6].slice(-3) === 'PP1' || arr[6].slice(-3) === 'P1P')) score -= 1
+    if (arr[7].slice(-2) === 'K1' && (arr[6].slice(-3) === 'PPP' || arr[6].slice(-3) === 'PP1' || arr[6].slice(-3) === 'P1P')) score -= 0.25
   }
 
   return score
@@ -342,7 +342,7 @@ var onSnapEnd = function () {
   board.position(game.fen())
 }
 
-// let fixedFen = '4k2r/8/8/8/8/8/8/4K3 b KQkq - 0 78'
+// let fixedFen = 'r1bqk2r/p1ppbp1p/1pn1p2p/1B2P3/3P4/2P2N2/PP1N1PPP/R2Q1RK1 b KQkq - 0 1'
 
 let board
 let game = new Chess()
