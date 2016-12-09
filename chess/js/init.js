@@ -1,9 +1,3 @@
-let board
-let game = new Chess()
-let statusEl = $('#status')
-let fenEl = $('#fen')
-let pgnEl = $('#pgn')
-
 // Given a fen string, returns the material between the black and white player.
 let getMaterialDelta = (fen) => {
   let score = 0
@@ -24,19 +18,34 @@ let getMaterialDelta = (fen) => {
     ++i
   }
 
+  // Value of pawns as they progress
   let arr = fen.split('/')
   for (let r = 1; r < 8; ++r){
     for (let c = 0; c < arr[r].length; ++c){
-      if (arr[r][c] === 'p') score += 0.01 * r
-      else if (arr[r][c] === 'P') score -= 0.01 * (6 - r)
+      if (arr[r][c] === 'p') {
+        // corner pawns half as useful (fewer offensive squares)
+        if (r === 0 || r === 7) score += 0.0025 * r
+        else score += 0.005 * r
+      } else if (arr[r][c] === 'P') {
+        // corner pawns half as useful (fewer offensive squares)
+        if (r === 0 || r === 7) score -= 0.0025 * r
+        else score -= 0.005 * (6 - r)
+      }
     }
+  }
+
+  // Value of castling
+  if (blackCanCastle) {
+    if (arr[0].slice(-2) === 'k1' && (arr[1].slice(-3) === 'ppp' || arr[1].slice(-3) === 'pp1' || arr[1].slice(-3) === 'p1p')) score += 1
+  }
+  if (whiteCanCastle) {
+    if (arr[7].slice(-2) === 'K1' && (arr[6].slice(-3) === 'PPP' || arr[6].slice(-3) === 'PP1' || arr[6].slice(-3) === 'P1P')) score -= 1
   }
 
   return score
 }
 
-let getPositionalDelta = (moves) => {
-
+let getPositionalValue = (moves) => {
   let val = {
     'pawn'  : 0,
     'knight': 0,
@@ -47,18 +56,16 @@ let getPositionalDelta = (moves) => {
 
   for (let i = 0, len = moves.length; i < len; ++i) {
     let c = moves[i][0]
-    if      (c === 'N' && val['knight'] < 1) val['knight']  += 0.04
-    else if (c === 'B' && val['bishop'] < 1) val['bishop']  += 0.04
-    else if (c === 'R' && val['rook'] < 1)   val['rook']   += 0.03
-    else if (c === 'Q' && val['queen'] < 1)  val['queen'] += 0.005
+    if      (c === 'N' && val['knight'] < 1) val['knight']  += 1/16
+    else if (c === 'B' && val['bishop'] < 1) val['bishop']  += 1/16
+    else if (c === 'R' && val['rook'] < 1)   val['rook']   += 1/32
+    else if (c === 'Q' && val['queen'] < 1)  val['queen'] += 1/64
   }
 
   let delta = val.pawn + val.knight + val.bishop + val.rook + val.queen
-
+  console.log(delta, moves)
   return delta
 }
-
-// console.log(getPositionalDelta("1rbqkbnr/pppppppp/2n5/8/2PP4/2N5/PP2PPPP/R1BQKBNR b KQkq - 0 1"))
 
 const makeMove = function () {
   console.time('Decision Time')
@@ -71,13 +78,16 @@ const makeMove = function () {
   nodesVisited = 0
 
   let gameTree = buildGameTree(symGame, depth, -100)
-  let bestMove = getLeastWorstMove(gameTree)
+  let bestMove = getLeastWorstMove(gameTree).move
 
   console.log(nodesVisited)
   console.log('game tree: ', gameTree)
 
-  game.move(bestMove.move)
+  game.move(bestMove)
 
+  if (blackCanCastle){
+    if (bestMove[0] === 'K' || bestMove === 'O-O' || bestMove[0] === 'O-O-O') blackCanCastle = false
+  }
   board.position(game.fen())
   updateStatus()
   console.timeEnd('Decision Time')
@@ -88,41 +98,77 @@ let nodesVisited = 0
 
 /* totally untested ... this will blow your game state/history  */
 let getOpponentMoves = (symGame) => {
+  let gamePGN = symGame.pgn()
+  let tokens = symGame.fen().split(' ')
+  tokens[1] = tokens[1] === 'w' ? 'b' : 'w'
+  symGame.load(tokens.join(' '))
 
-    let tokens = symGame.fen().split(' ')
-    tokens[1] = tokens[1] === 'w' ? 'b' : 'w'
-    symGame.load(tokens.join(' '))
+  let moves = symGame.moves()
 
-    let moves = symGame.moves()
+  tokens = symGame.fen().split(' ')
+  tokens[1] = tokens[1] === 'w' ? 'b' : 'w'
+  symGame.load_pgn(gamePGN)
 
-    tokens = symGame.fen().split(' ')
-    tokens[1] = tokens[1] === 'w' ? 'b' : 'w'
-    symGame.load(tokens.join(' '))
-
-    return moves
+  return moves
 }
 
+let getPositionalDelta = (symGame) =>{
+  if (symGame.turn() === 'b')
+    return getPositionalValue(symGame.moves()) - getPositionalValue(getOpponentMoves(symGame))
+  else {
+    return getPositionalValue(getOpponentMoves(symGame)) - getPositionalValue(symGame.moves())
+  }
+}
+
+let getPieceValue = (piece) => {
+  if (piece === 'B' || piece === 'N' || piece === 'n' || piece === 'b') return 3
+  if (piece === 'R' || piece === 'r') return 5
+  if (piece === 'Q' || piece === 'q') return 9
+  else return 1
+}
+
+let getSquareValue = (symGame, square) => {
+  let piece = symGame.get(square)
+
+  console.log(piece)
+
+  if (piece !== null) return getPieceValue(piece.type)
+  else return 0
+}
 
 // Applies every possible capture at position 'square'. Returns the optimal case scenario for each player.
 // color 1 = black, color 2 = white
 let maxCaptureDepth = 0
-const staticCaptureExchange = (symGame, square, color, move) => {
+const dynamicCaptureExchange = (symGame, square, color, move) => {
   maxCaptureDepth++
   let moves = symGame.moves().filter((move) => move.indexOf('x') > -1)
   nodesVisited += moves.length
 
-  if (moves.length === 0 || maxCaptureDepth === 3) { // no more captures available
-    maxCaptureDepth--
-    let virtualMoves = color === 1 ? symGame.moves() : getOpponentMoves(symGame)
 
-    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) * color + getPositionalDelta(virtualMoves), null)
+
+  // Collect moves where more valuable pieces capture less valuable pieces.
+  // If a winning scenario is found using this rule, make the move
+  // otherwise search for unprotected pieces
+  let efficientMoves = []
+  for (let i = 0, len = moves.length; i < len; ++i) {
+    if (getPieceValue(moves[i][0]) <= getSquareValue(symGame, moves[i].slice(-2))){
+      efficientMoves.push(moves[i])
+    }
   }
+
+  moves = efficientMoves
+
+  if (moves.length === 0 || maxCaptureDepth === 4) { // no more captures available
+    maxCaptureDepth--
+    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) + getPositionalDelta(symGame), null)
+  }
+
 
   let responses = {}
 
   for (let i = 0, len = moves.length; i < len; ++i) {
     symGame.move(moves[i])
-    responses[moves[i]] = staticCaptureExchange(symGame, square, color, moves[i])
+    responses[moves[i]] = dynamicCaptureExchange(symGame, square, color, moves[i])
     symGame.undo()
   }
 
@@ -147,8 +193,7 @@ const staticCaptureExchange = (symGame, square, color, move) => {
 const buildGameTree = (symGame, depth, parentWorstDelta, move = '') => {
 
   if (depth === 0) { // terminal node
-    const moves = symGame.turn() === 'b' ? symGame.moves() : getOpponentMoves(symGame)
-    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) + getPositionalDelta(moves), null)
+    return new Node(symGame.fen(), move, getMaterialDelta(symGame.fen()) + getPositionalDelta(symGame), null)
   }
 
   let moves = symGame.moves()
@@ -159,7 +204,7 @@ const buildGameTree = (symGame, depth, parentWorstDelta, move = '') => {
   const responses = {}
   let branchWorstDelta = 100
 
-  console.log("considering... ", moves)
+  // console.log("considering... ", moves)
 
   moves.map((move) => {
     if (move.indexOf('x') === -1) idleMoves.push(move)
@@ -172,7 +217,7 @@ const buildGameTree = (symGame, depth, parentWorstDelta, move = '') => {
   for (let i = 0, len = captureMoves.length; i < len; ++i) {
     let currMove = captureMoves[i]
     symGame.move(currMove)
-    responses[currMove] = staticCaptureExchange(symGame, currMove.slice(-2), 1, currMove)
+    responses[currMove] = dynamicCaptureExchange(symGame, currMove.slice(-2), 1, currMove)
 
     if (responses[currMove].delta < parentWorstDelta) {
       symGame.undo()
@@ -255,8 +300,15 @@ var onDragStart = function (source, piece, position, orientation) {
     return false
 }
 
+
+let whiteCanCastle = true
+let blackCanCastle = true
+
 let buildValidFen = (board, turn) => {
-  return board.fen() + ' ' + turn + ' KQkq - 0 1'
+  let castling = ''
+  if (whiteCanCastle) castling += 'KQ'
+  if (blackCanCastle) castling += 'kq'
+  return board.fen() + ' ' + turn + ' ' + castling + ' - 0 1'
 }
 
 var updateStatus = function () {
@@ -290,6 +342,14 @@ var onSnapEnd = function () {
   board.position(game.fen())
 }
 
+// let fixedFen = '4k2r/8/8/8/8/8/8/4K3 b KQkq - 0 78'
+
+let board
+let game = new Chess()
+let statusEl = $('#status')
+let fenEl = $('#fen')
+let pgnEl = $('#pgn')
+
 var cfg = {
   draggable: true,
   position: 'start',
@@ -300,3 +360,5 @@ var cfg = {
 
 board = ChessBoard('board', cfg)
 updateStatus()
+
+// makeMove()
