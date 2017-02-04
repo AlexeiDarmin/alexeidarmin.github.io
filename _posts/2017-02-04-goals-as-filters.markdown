@@ -1,29 +1,46 @@
 ---
 layout: post
-title:  "Technical Interview Anxiety"
+title:  "Goals as Filters"
 date:   2017-01-10 14:54:55 -0500
 categories: jekyll update
 ---
-I find myself sitting in a coffee shop, agonizing over an interview I have scheduled for tomorrow. I forgot my gym access card and tipped $0.01 via card to a local restaurant. I’m struggling to function properly.
+I’ve refined my goals for 2017 after reading Essentialism: The Disciplined Pursuit of Less by Greg McKeown. Greg claims that we impede our ability to succeed by accepting good opportunities and missing out on great ones. We would benefit from having a systematic way of filtering opportunities, even good ones.
 
-Why this interview? I’ve already passed two technical interviews with this company so what makes this one so special?
+Well crafted goals should act as blueprints for thousands of things not to do. For starters: if it’s not a HELL YES, then it’s a no. Goals should also be concrete and inspirational.
 
-The first consisted of a brief phone call followed by a 30 minute coding challenge. The second was a face to face with three interviewers and another technical challenge. I received an invitation for the third stage of the interview where I would be further tested and get to meet the rest of the team.
+I’ll share two of my original goals that were not concrete AND inspirational.
 
-Will I be facing a firing squad of five or more people tomorrow? Will each cringe as I blunder my way through their professional specialties during the talk or assignment? Or will I utterly fail the challenge due to a mind lapse where I forget a trivially simple yet crucially important component. Better yet what if I fail so epicly they question the original interviewers as to how the hell I got past stage two.
+To ‘run three marathons’ is measurable yet it does nothing to help me filter future opportunities. More critically, I don’t enjoy running and I rarely say HELL YES to the idea so maybe I should keep running as a secondary hobby rather than a primary goal.
 
-Sigh.
+‘Grow my career’ is inspirational yet it also lacks a concrete measurable criteria making it unhelpful for filtering opportunities. When presented with multiple books, conferences, or projects, how should I prioritise my options?
 
-There’s one more company with whom I’ve reached the final interview, however I believe the primary technical challenge is behind me.
+Goals are about substance and not style. Format them any way you like so long as they help you make decisions and measure trade offs. When rewriting mine I found that there are few things I really care about which meant removing a lot of items that I originally considered goals.
 
-First I chatted with a recruiter, then the CTO, then the CEO, then I had one week to complete a technical challenge. I worked on this thing every day, many of which were holidays since it was Christmas.
+Without further ado, my refined goals for 2017 are as follows:
 
-After I passed, I met with the CTO. We chatted over coffee, then he informed me of the remaining steps. I would have to win over the rest of the team which would involve further technical shenanigans. If they approve, I will be put on a two week probation period. At the end of the probation they will have a vote, and only if it is unanimous would I be hired.
+**Focus on JavaScript, React, Redux, Flexbox, CSS, Testing**
 
-ಠ_ಠ
+Earn 14% salary bump	(achievement measurement)
+Mastery of craft	(reason - late game)
 
-Remember when I said “the primary technical challenge is behind me”? I lied. Ain’t nothing behind me but flowers and good times.
+**Publish chess bot API on NPM with an ELO of over 1800**
 
-I've set the bar high and applied for amazing teams. The stakes increased with each passed interview. I finally realize quite how high they are, and how shitty it would be to fail now of all times.
+Learn more about JavaScript and Chess (reason)
+First official completion of project (reason)
 
-Writing about this has given a brief moment of respite.
+**Publish a blog post about anything once a week**
+
+Become comfortable publishing imperfect content	(reason)
+Like this blog post for example...
+
+**Protect My Own Asset**
+
+Goals aimed at protecting my health. Avoid burnout, injury, malnutrition, self-sacrifice and other activities that are detrimental to my being.
+
+**Actively prioritize sleep and aim for eight hours**
+
+**Find a de-stressing routine that works and stick to it (work in progress)**
+
+Unplug from computer one day a week (option one)
+Run / bike mornings or evenings	(option two)
+Quality time hikes with friends	(option three)
