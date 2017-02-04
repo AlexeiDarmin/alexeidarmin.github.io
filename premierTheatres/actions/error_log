@@ -1,9 +1,0 @@
-[18-Nov-2015 17:18:21 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 5
-[18-Nov-2015 17:21:54 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:22:07 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:22:54 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:22:57 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:28:15 UTC] PHP Fatal error:  Call to a member function prepare() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:31:49 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:33:27 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
-[18-Nov-2015 17:33:31 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/mercscout/public_html/premierTheatres/forms/createTheatre.php on line 6
