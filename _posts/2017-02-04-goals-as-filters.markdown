@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Goals as Filters"
-date:   2017-01-10 14:54:55 -0500
+date:   2017-02-04 14:54:55 -0500
 categories: jekyll update
 ---
 I’ve refined my goals for 2017 after reading Essentialism: The Disciplined Pursuit of Less by Greg McKeown. Greg claims that we impede our ability to succeed by accepting good opportunities and missing out on great ones. We would benefit from having a systematic way of filtering opportunities, even good ones.

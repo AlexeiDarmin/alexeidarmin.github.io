@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Technical Interview Anxiety"
-date:   2017-02-4 14:54:55 -0500
+date:   2017-01-10 14:54:55 -0500
 categories: jekyll update
 ---
 
