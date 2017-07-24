@@ -14,12 +14,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Alexei Darmin
-email: alexei.darmin@gmail.com
-description: I, Alexei Darmin, am a web software developer from Toronto Ontario Canada and this is an SEO friendly description.
+email: ''
+description: JavaScript, finance, and personal growth. Let's get inspired to dream bigger together.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: alexeidarmin
-github_username:  alexeidarmin
+github_username: alexeidarmin
 
 # Build settings
 markdown: kramdown
@@ -28,3 +28,6 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+
+
+# JavaScript developer @inFlowInventory. Growth mindset. Looking to inspire and get inspired.
