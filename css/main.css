@@ -273,13 +273,18 @@ textarea {
 body {
   font-family: "Poppins", sans-serif;
   background: #f7f7f7;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .navbar {
   padding: 8px;
-  background: black;
+  background: #fefefe;
   width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  box-shadow: 1px 1px 10px #0000006e;
+  background-image: linear-gradient(to right, #001c4b, #133e3cd6);
 }
 
 .navbar > h1 {
@@ -287,9 +292,63 @@ body {
   margin: 4px;
   font-size: 24px;
   color: #d6d6d6;
+  font-weight: 500;
+}
+
+.bigscreen {
+  width: 100%;
+  margin: auto;
+  height: 500px;
+  background-image: url(../img/poster.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin-top: 54px;
+}
+
+.bigscreen > .summaryCard {
+  margin-left: 4%;
+  position: absolute;
+  margin-top: 180px;
+  padding: 8px;
+  color: white;
+  text-shadow: 2px 2px #021e4c;
+}
+
+.bigscreen > .summaryCard > .summaryTitle {
+  font-size: 44px;
+}
+.bigscreen > .summaryCard > .summaryDescription {
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.boxWrappingContainer {
+  background: #f2f2f2;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .container {
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+
+.shortStoryContainer {
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+
+.shortStoryDescription {
+  color: #989898;
+}
+
+.boxContainer {
   max-width: 500px;
   width: calc(100% - 16px);
   margin: auto;
@@ -307,7 +366,6 @@ body {
   min-height: 80px;
   box-sizing: border-box;
 }
-
 
 .box:after {
   position: absolute;
@@ -334,4 +392,17 @@ body {
   font-weight: 200;
   color: #4c4c4c;
   font-size: 0.8em;
+}
+
+.container > h2 {
+  font-size: 32px;
+  text-align: center;
+}
+
+.container > .shortStory {
+  text-align: left;
+}
+
+.myExperience {
+  text-align: center;
 }
