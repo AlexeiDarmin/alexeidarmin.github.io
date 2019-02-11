@@ -270,211 +270,57 @@ textarea {
   }
 }
 
-body {
-  font-family: "Poppins", sans-serif;
-  background: #f7f7f7;
-  overflow-x: hidden;
-}
-
-.navbar {
-  padding: 8px;
-  background: #fefefe;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 10;
-  box-shadow: 1px 1px 10px #0000006e;
-  background-image: linear-gradient(to right, #001c4b, #133e3cd6);
-}
-
-.navbar > h1 {
-  padding: 0;
-  margin: 4px;
-  font-size: 24px;
-  color: #d6d6d6;
-  font-weight: 500;
-}
-
-.bigscreen {
-  width: 100%;
+.boardContainer {
   margin: auto;
-  height: 500px;
-  background-image: url(../img/poster.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  margin-top: 54px;
+  width: calc(600px);
+  border: 6px solid #00568c;
+  border-radius: 8px;
+  background-image: linear-gradient(#00a2ff,#0083ce);
+
 }
 
-.bigscreen > .summaryCard {
-  position: absolute;
-  margin-top: 180px;
-  color: white;
-  text-shadow: 2px 2px #021e4c;
-  padding: 8px 16px;
-  background: #00000030;
-  padding-left: 8%;
-}
-
-.bigscreen > .summaryCard > .summaryTitle {
-  font-size: 64px;
-  text-shadow: 3px 3px #0d2a4f;
-}
-.bigscreen > .summaryCard > .summaryDescription {
-  text-transform: uppercase;
-  font-size: 20px;
-}
-
-.boxWrappingContainer {
-  background: #f2f2f2;
-  padding: 8px 16px;
+.boardContainer > .cell {
+  background: white;
+  width: calc(600px / 7 - 12px);
+  height: calc(600px / 7 - 12px);
+  display: inline-block;
+  border: 2px solid #007fce;
+  border-radius: 50%;
   box-sizing: border-box;
+  margin: 6px;
 }
 
-.container {
-  width: 100%;
-  max-width: 1200px;
-  box-sizing: border-box;
-  margin: auto;
+.boardContainer > .player_one {
+  background-image: linear-gradient(#ff6666,#d40000);
+  box-shadow: 0px 0px 1px #0000007d;
 }
 
-.shortStoryContainer {
-  max-width: 800px;
-  width: 100%;
-  min-height: 300px;
-  margin: auto;
-  box-sizing: border-box;
-  padding: 64px 16px;
+.boardContainer > .player_two {
+  background-image: linear-gradient(#ffffb7,#949401);
+  box-shadow: 0px 0px 1px #0000007d;
 }
 
-.shortStoryDescription {
-  font-size: 14px;
-  color: #989898;
-  line-height: 24px;
-}
-
-.boxContainer {
-  max-width: 500px;
-  width: calc(100% - 16px);
-  margin: auto;
-}
-
-.box {
-  width: 100%;
-  background: #ffffff;
-  max-width: 400px;
-  margin: 24px auto;
-  box-shadow: 0px 0px 4px #4c4c4c26;
-  position: relative;
-  padding: 8px;
-  word-wrap: break-word;
-  min-height: 80px;
-  box-sizing: border-box;
-}
-
-.box:after {
-  position: absolute;
-  content: "";
-  height: 30px;
-  border-right: 2px dashed #b7b5b5;
-  top: 100%;
-  left: 25px;
-  box-sizing: border-box;
-}
-
-.box:last-child:after {
-  display: none;
-}
-
-.timeline {
-  font-size: 0.7em;
-  font-weight: 300;
-  color: #0098e6;
-  margin: 4px 0px;
-}
 
 .description {
-  font-weight: 200;
-  color: #4c4c4c;
-  font-size: 0.8em;
-}
-
-.container > h2 {
-  font-size: 32px;
-  text-align: center;
-}
-
-.shortStory {
-  text-align: left;
-  display: inline-block;
-}
-
-.myExperience {
-  text-align: center;
-}
-
-.footer {
-  width: 100%;
-  height: 50px;
-  background: black;
-  text-align: center;
-  color: white;
-  font-size: 14px;
-  font-weight: 200;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer > a {
-  margin: 8px;
-}
-
-.someNumbers {
-  max-width: 800px;
-  width: 100%;
-  min-height: 300px;
+  width: 400px;
   margin: auto;
-  box-sizing: border-box;
-  padding: 32px 16px;
+  padding: 16px;
+  text-align: center;
+  font-family:sans-serif;
 }
-
-.inlinebox {
-  width: 100%;
-  background: #ffffff;
-  max-width: 400px;
-  margin: 24px auto;
-  box-shadow: 0px 0px 4px #4c4c4c26;
-  position: relative;
+.botMoveButton {
+  background: grey;
+  border-radius: 4px;
+  margin: auto;
+  display: block;
+  margin-top: 24px;
+  width: 200px;
+  text-align:center;
   padding: 8px;
-  word-wrap: break-word;
-  min-height: 80px;
-  box-sizing: border-box;
-  max-width: 120px;
-  display: inline-block;
+  font-family: sans-serif;
+  cursor: pointer;
 }
 
-
-.someNumbersInner {
-  max-width: 400px;
-  width: 100%;
-  margin: auto;
-  display: flex;
-}
-
-.blue {
-  color: #0098e6;
-}
-
-@media only screen and (max-width: 440px) {
-  .inlinebox {
-    max-width: 100%;
-    margin: 12px auto;
-  }
-
-  .someNumbersInner {
-    flex-direction: column;
-  }
+.botMoveButton:hover {
+  background: #a0a0a0;
 }
