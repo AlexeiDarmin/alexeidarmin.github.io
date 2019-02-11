@@ -383,7 +383,6 @@ function getFirstValidMove(boardState, player) {
 
 function getMovesThatResultInALoss(boardState, player) {
   const vetoMoves = [];
-  debugger
   const opponent = togglePlayerTurnLocal(player);
   for (let c = 0; c < 7; c++) {
     const index = findIndexOfLowestRow(boardState, c);

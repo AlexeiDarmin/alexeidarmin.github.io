@@ -272,7 +272,7 @@ textarea {
 
 .boardContainer {
   margin: auto;
-  width: calc(600px);
+  width: calc(400px);
   border: 6px solid #00568c;
   border-radius: 8px;
   background-image: linear-gradient(#00a2ff,#0083ce);
@@ -281,13 +281,13 @@ textarea {
 
 .boardContainer > .cell {
   background: white;
-  width: calc(600px / 7 - 12px);
-  height: calc(600px / 7 - 12px);
+  width: calc(400px / 7 - 4px);
+  height: calc(400px / 7 - 4px);
   display: inline-block;
   border: 2px solid #007fce;
   border-radius: 50%;
   box-sizing: border-box;
-  margin: 6px;
+  margin: 2px;
 }
 
 .boardContainer > .player_one {
@@ -304,9 +304,13 @@ textarea {
 .description {
   width: 400px;
   margin: auto;
-  padding: 16px;
+  padding: 8px;
   text-align: center;
   font-family:sans-serif;
+}
+
+.description > h2 {
+  margin: 0 auto;
 }
 .botMoveButton {
   background: grey;
