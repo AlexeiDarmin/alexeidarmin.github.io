@@ -1,41 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <!-- Place favicon.ico in the root directory -->
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
 
-  <meta name="theme-color" content="#fafafa">
-</head>
+    <meta name="theme-color" content="#fafafa" />
+  </head>
 
-<body>
-  <!--[if IE]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
+  <body>
+    <!--[if IE]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+        your experience and security.
+      </p>
+    <![endif]-->
 
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
+    <!-- Add your site or application content here -->
+    <div class="super-header">
+        Coming soon
+      </div>
 
-  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+    <!-- <div class="content" id="content">
+      <div class="super-header">
+        Developer, entrepreneur, investor.
+      </div>
+      <h1>Alexei Darmin</h1>
+      <div class="sub-header">
+        Hey there 👋, I work at GroupBy building tools that help merchants
+        manage ecommerce search strategies at scale. I strive to find meaningful
+        ways to present and consume data.
+      </div>
+
+      <div class="filters-container">
+        <input />
+      </div>
+
+      <div class="books-container">
+        <div class="book-card">
+          <img
+            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
+            class="book-image"
+          />
+          <div class="green-circle"></div>
+          read
+
+          <div class="book-title">
+            TITLE
+          </div>
+          <div class="book-description"></div>
+        </div>
+        <div class="book-card">
+          <img
+            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
+            class="book-image"
+          />
+          <div class="red-circle"></div>
+          unread
+
+          <div class="book-title">
+            TITLE
+          </div>
+          <div class="book-description">
+            Description
+          </div>
+        </div>
+        <div class="book-card">
+          <img
+            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
+            class="book-image"
+          />
+          <div class="book-title">
+            TITLE
+          </div>
+          <div class="book-description">
+            Description
+          </div>
+        </div>
+        <div class="book-card">
+          <img
+            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
+            class="book-image"
+          />
+          <div class="book-title">
+            TITLE
+          </div>
+          <div class="book-description">
+            Description
+          </div>
+        </div>
+        <div class="book-card">
+          <img
+            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
+            class="book-image"
+          />
+          <div class="book-title">
+            TITLE
+          </div>
+          <div class="book-description">
+            Description
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          '<script src="js/vendor/jquery-3.4.1.min.js"><\/script>'
+        );
+    </script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      function handleResponse(response) {
+        for (var i = 0; i < response.items.length; i++) {
+          var item = response.items[i];
+          // in production code, item.text should have the HTML entities escaped.
+          document.getElementById("content").innerHTML +=
+            "<br>" + item.volumeInfo.title;
+        }
+      }
+
+      function search() {
+        const BASE_URL = "https://www.googleapis.com/books/v1/";
+        const VOLUMES_PATH = "users/106342878832515929879/bookshelves/4/volumes"
+        const KEY = "AIzaSyCXd3M-Cb0KvyBMKTNS23nfaoiez6l51Go"
+        fetch(`${BASE_URL}${VOLUMES_PATH}?key=${KEY}`, {
+          method: "GET",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Methods": "POST, GET",
+          }
+        })
+          .then(response => response.json())
+          .then(json => console.log(json));
+      }
+      search()
+    </script>
+    <!-- <script src="https://www.googleapis.com/books/v1/users/106342878832515929879/bookshelves/4/volumes?key=AIzaSyCXd3M-Cb0KvyBMKTNS23nfaoiez6l51Go"></script> -->
+
+    <!-- ?key={AIzaSyDU7-GwYiKcyAv0FvvFy74VgXY4CYMZVQU} -->
+
+    <!-- &callback=handleResponse -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67831883-1"></script>      
   <script>
-    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
-    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
-  </script>
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
-</body>
+	  window.dataLayer = window.dataLayer || [];
+      ga.q = [];	  function gtag(){dataLayer.push(arguments);}
+      ga.l = +new Date();	  gtag('js', new Date());
+      ga("create", "UA-XXXXX-Y", "auto");	
+      ga("send", "pageview");	  gtag('config', 'UA-67831883-1');
+    </script>	</script>
 
+    <script src="https://www.google-analytics.com/analytics.js" async></script>
+  </body>
 </html>

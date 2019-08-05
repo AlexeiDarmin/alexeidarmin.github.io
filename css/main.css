@@ -264,3 +264,119 @@ textarea {
   }
 }
 
+body {
+  font-family: "Roboto", sans-serif;
+  color: #3c3c3c;
+
+  background-color: #e2fbff;
+  background-image: linear-gradient(to bottom right, #e2fbff, white);
+
+  height: 100vh;
+}
+
+.content {
+  width: 80%;
+  margin: 32px auto;
+
+  /* border: 1px solid black; */
+}
+
+.super-header {
+  margin-left: 25%;
+
+  /* border: 1px solid black; */
+}
+
+h1 {
+  margin: 32px 0 32px calc(25% + 32px);
+  font-size: 3em;
+  letter-spacing: 0.05em;
+
+  /* border: 1px solid black; */
+}
+
+.sub-header {
+  margin: 16px 0 16px calc(25% + 32px);
+  line-height: 1.5em;
+}
+
+.filters-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  padding: 8px;
+
+  margin-top: 48px;
+
+  border: 1px solid #717171;
+}
+
+.books-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+
+  margin-top: 48px;
+
+  border: 1px solid #717171;
+}
+
+.books-container > .book-card {
+  display: flex;
+  flex: 0 0 150px;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #717171;
+  margin: 8px;
+  box-shadow: 2px 2px 2px #31313152;
+  overflow: hidden;
+  background: #f4fdff;
+}
+
+.green-circle {
+  background: #a9ffa9;
+  display: flex;
+  /* width: 100%; */
+  /* font-size: 0.7em; */
+  /* height: 1.2em; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* font-style: italic; */
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  border: 1px solid #717171;
+}
+
+.red-circle {
+  background: #ffc9c9;
+  display: flex;
+  /* width: 100%; */
+  /* font-size: 0.7em; */
+  /* height: 1.2em; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* font-style: italic; */
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  border: 1px solid #717171;
+}
+
+
+.books-container > .book-card > .book-image {
+  height: calc(150px * 1.5);
+  display: flex;
+}
+
+.books-container > .book-card > .book-title {
+  border: 1px solid #717171;
+  margin: 4px;
+}
+
+.books-container > .book-card > .book-description {
+  border: 1px solid #717171;
+  margin: 4px;
+}
