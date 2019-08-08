@@ -35,7 +35,7 @@
         Coming soon
       </div>
 
-    <!-- <div class="content" id="content">
+    <div class="content" id="content">
       <div class="super-header">
         Developer, entrepreneur, investor.
       </div>
@@ -50,73 +50,9 @@
         <input />
       </div>
 
-      <div class="books-container">
-        <div class="book-card">
-          <img
-            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
-            class="book-image"
-          />
-          <div class="green-circle"></div>
-          read
-
-          <div class="book-title">
-            TITLE
-          </div>
-          <div class="book-description"></div>
-        </div>
-        <div class="book-card">
-          <img
-            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
-            class="book-image"
-          />
-          <div class="red-circle"></div>
-          unread
-
-          <div class="book-title">
-            TITLE
-          </div>
-          <div class="book-description">
-            Description
-          </div>
-        </div>
-        <div class="book-card">
-          <img
-            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
-            class="book-image"
-          />
-          <div class="book-title">
-            TITLE
-          </div>
-          <div class="book-description">
-            Description
-          </div>
-        </div>
-        <div class="book-card">
-          <img
-            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
-            class="book-image"
-          />
-          <div class="book-title">
-            TITLE
-          </div>
-          <div class="book-description">
-            Description
-          </div>
-        </div>
-        <div class="book-card">
-          <img
-            src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1421618636l/30659.jpg"
-            class="book-image"
-          />
-          <div class="book-title">
-            TITLE
-          </div>
-          <div class="book-description">
-            Description
-          </div>
-        </div>
-      </div>
-    </div> -->
+      <div class="books-container" id="books-container"></div>
+        
+    </div>
 
     <script src="js/vendor/modernizr-3.7.1.min.js"></script>
     <script
@@ -133,33 +69,7 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
 
-    <script>
-      function handleResponse(response) {
-        for (var i = 0; i < response.items.length; i++) {
-          var item = response.items[i];
-          // in production code, item.text should have the HTML entities escaped.
-          document.getElementById("content").innerHTML +=
-            "<br>" + item.volumeInfo.title;
-        }
-      }
-
-      function search() {
-        const BASE_URL = "https://www.googleapis.com/books/v1/";
-        const VOLUMES_PATH = "users/106342878832515929879/bookshelves/4/volumes"
-        const KEY = "AIzaSyCXd3M-Cb0KvyBMKTNS23nfaoiez6l51Go"
-        fetch(`${BASE_URL}${VOLUMES_PATH}?key=${KEY}`, {
-          method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": true,
-            "Access-Control-Allow-Methods": "POST, GET",
-          }
-        })
-          .then(response => response.json())
-          .then(json => console.log(json));
-      }
-      search()
-    </script>
+  
     <!-- <script src="https://www.googleapis.com/books/v1/users/106342878832515929879/bookshelves/4/volumes?key=AIzaSyCXd3M-Cb0KvyBMKTNS23nfaoiez6l51Go"></script> -->
 
     <!-- ?key={AIzaSyDU7-GwYiKcyAv0FvvFy74VgXY4CYMZVQU} -->
@@ -169,15 +79,5 @@
 <!-- Global site tag (gtag.js) - Google Analytics -->
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67831883-1"></script>      
-  <script>
-	  window.dataLayer = window.dataLayer || [];
-      ga.q = [];	  function gtag(){dataLayer.push(arguments);}
-      ga.l = +new Date();	  gtag('js', new Date());
-      ga("create", "UA-XXXXX-Y", "auto");	
-      ga("send", "pageview");	  gtag('config', 'UA-67831883-1');
-    </script>	</script>
-
-    <script src="https://www.google-analytics.com/analytics.js" async></script>
   </body>
 </html>
