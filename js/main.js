@@ -1,4 +1,4 @@
-// runs the main application logic on load of window. 
+// runs the main application logic on load of window.
 window.onload = function() {
   console.log("hello world");
 
@@ -7,7 +7,7 @@ window.onload = function() {
     "../raw-data/to-read-books.json"
   ];
 
-  let aggrBook = []
+  let aggrBook = [];
   const listOfPromises = bookPaths.slice().map(path => () =>
     $.getJSON(path, function(json) {
       // console.log('books', json.items)
@@ -22,19 +22,46 @@ window.onload = function() {
 function processBooks(books) {
   console.log("books:", books);
 
-  let aggrCategory = {};
-  books.forEach(book => {
+  let missingCategory = 0;
+  const aggrCategories = books.reduce((aggr, book) => {
+    console.log(book, aggr);
     const categories = book.volumeInfo.categories;
 
-    if (!categories) return
+    if (!categories) {
+      missingCategory++;
+      return aggr;
+    }
 
-    if (categories.length > 0) console.log("wow so category:", categories);
-    const cat = book.volumeInfo.categories[0];
-    if (!aggrCategory[cat]) aggrCategory[cat] = 0;
-    aggrCategory[cat] += 1;
-  });
+    // categories is a list of size one always
+    if (categories.length > 1) console.log("wow so category:", categories);
 
-  console.log("category total!", aggrCategory);
+    const cat = book.volumeInfo.categories[0].toProperCase();
+    if (!aggr[cat]) aggr[cat] = 0;
+    aggr[cat] += 1;
+
+    return aggr;
+  }, {});
+
+  const categoryList = dictToList(aggrCategories).sort((a, b) => {
+    if (a.value > b.value) return -1
+    else return 1
+  })
+
+  console.log('categoryList:', categoryList)
+
+  console.log("missingCategory", missingCategory);
+  console.log("category total!", aggrCategories);
+}
+
+function dictToList(dict) {
+  const arr = [];
+
+  for (const key in dict) {
+    if (dict.hasOwnProperty(key)) {
+      arr.push({ category: key, value: dict[key] });
+    }
+  }
+  return arr
 }
 
 // executes a list of promises, once they are complete then executes the callback cb.
@@ -43,7 +70,7 @@ function afterAll(listOfPromises, cb) {
   listOfPromises.forEach(promise => {
     promise().done(function(json) {
       complete++;
-      console.log(complete, listOfPromises.length)
+      console.log(complete, listOfPromises.length);
       if (complete === listOfPromises.length) {
         cb();
       }
@@ -120,3 +147,10 @@ function shuffle(a) {
 //     .then(json => console.log(json));
 // }
 // search()
+
+// helpers
+String.prototype.toProperCase = function() {
+  return this.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+};
