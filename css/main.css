@@ -265,12 +265,14 @@ textarea {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Helvetica", sans-serif;
   color: #3c3c3c;
 
-  background-color: #e2fbff;
-  background-image: linear-gradient(to bottom right, #e2fbff, white);
+  /* background-color: #e2fbff; */
+  /* background-image: linear-gradient(to bottom right, #e2fbff, white); */
 
+  background: #f9f9f9;
   height: 100vh;
 }
 
@@ -365,7 +367,6 @@ h1 {
   border: 1px solid #717171;
 }
 
-
 .books-container > .book-card > .book-image {
   height: calc(150px * 1.5);
   display: flex;
@@ -379,4 +380,87 @@ h1 {
 .books-container > .book-card > .book-description {
   border: 1px solid #717171;
   margin: 4px;
+}
+
+.summary-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.content-card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #cecece;
+  max-width: 200px;
+  margin: 8px;
+  padding: 12px;
+  text-align: right;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.content-card-number-container {
+  font-size: 1.75em;
+  display: flex;
+  align-items: center;
+}
+
+.content-card-number {
+  flex: 1;
+}
+
+.book-page-container {
+  display: flex;
+}
+
+.book-header {
+  background: white;
+  width: 100%;
+  color: #4a4a4a;
+  padding: 12px;
+  border-bottom: 1px solid #cecece;
+}
+
+.hamburger-menu {
+  background: white;
+  border-right: 1px solid #cecece;
+  flex: 0 0 200px;
+}
+
+.hamburger-header {
+  background: linear-gradient(to bottom right, #c4f1c9ba, white);
+  padding: 12px;
+  border-bottom: 1px solid #cecece;
+  display: flex;
+  justify-content: center;
+}
+
+.hamburger-header > h1 {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.hamburger-menu > .super-header {
+  font-size: 0.75em;
+  text-align: center;
+  padding: 8px;
+  border-bottom: 1px solid #cecece;
+  margin: 0;
+}
+
+.menu-item-root {
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid #cecece;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.content-margin {
+  margin: 0 16px;
 }

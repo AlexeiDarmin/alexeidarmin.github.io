@@ -10,7 +10,6 @@ window.onload = function() {
   let aggrBook = [];
   const listOfPromises = bookPaths.slice().map(path => () =>
     $.getJSON(path, function(json) {
-      // console.log('books', json.items)
       handleResponse(json.items);
       aggrBook = aggrBook.concat(json.items);
     })
@@ -24,7 +23,6 @@ function processBooks(books) {
 
   let missingCategory = 0;
   const aggrCategories = books.reduce((aggr, book) => {
-    console.log(book, aggr);
     const categories = book.volumeInfo.categories;
 
     if (!categories) {
@@ -47,8 +45,14 @@ function processBooks(books) {
     else return 1
   })
 
+  const totalCategories = categoryList.reduce((aggr, item) => aggr + item.value, 0)
+  categoryList.forEach((item, index) => {
+    categoryList[index] = Object.assign({}, item, { percentage: ((item.value / totalCategories)*100).toFixed(2)})
+  })
+
   console.log('categoryList:', categoryList)
 
+  console.log('totaaal:', totalCategories)
   console.log("missingCategory", missingCategory);
   console.log("category total!", aggrCategories);
 }
