@@ -56,72 +56,13 @@ function processBooks(books) {
   });
 
   populateGenreCard(categoryList);
+  populateBookTable(books);
+
   console.log("categoryList:", categoryList);
 
   console.log("totaaal:", totalCategories);
   console.log("missingCategory", missingCategory);
   console.log("category total!", aggrCategories);
-}
-
-function populateGenreCard(categoryList) {
-  console.log("things are happening!");
-  const top10 = categoryList.slice(0, 5);
-
-  const contentElement = document.getElementById("genre-table");
-  console.log(top10, contentElement);
-  top10.forEach(item => inject(createRow(item), contentElement));
-
-  // Drawing a pie chart with padding and labels that are outside the pie
-  new Chartist.Pie(
-    ".genre-chart",
-    {
-      series: top10.map(item => item.value),
-      labels: top10.map(item => item.category)
-    },
-    {
-      chartPadding: 30,
-      labelOffset: 50,
-      labelDirection: "explode",
-    }
-  );
-}
-
-
-function inject(HTML, domNode) {
-  domNode.innerHTML += HTML;
-}
-
-function createRow(item) {
-  return `<div class="genre-row">
-  <div class="genre-col first">${item.category}</div>
-  <div class="genre-col second">${item.value}</div>
-  <div class="genre-col third">${item.percentage}%</div>
-</div>`;
-}
-
-function dictToList(dict) {
-  const arr = [];
-
-  for (const key in dict) {
-    if (dict.hasOwnProperty(key)) {
-      arr.push({ category: key, value: dict[key] });
-    }
-  }
-  return arr;
-}
-
-// executes a list of promises, once they are complete then executes the callback cb.
-function afterAll(listOfPromises, cb) {
-  let complete = 0;
-  listOfPromises.forEach(promise => {
-    promise().done(function(json) {
-      complete++;
-      console.log(complete, listOfPromises.length);
-      if (complete === listOfPromises.length) {
-        cb();
-      }
-    });
-  });
 }
 
 function handleResponse(books) {
@@ -130,38 +71,6 @@ function handleResponse(books) {
   shuffle(books);
   const contentElement = document.getElementById("books-container");
   books.forEach(item => createBookCard(item, contentElement));
-}
-
-function createBookCard(item, element) {
-  const { imageLinks, title } = item.volumeInfo;
-
-  element.innerHTML += `
-    <div class="book-card">
-      <img
-        src="${imageLinks && imageLinks.thumbnail}"
-        class="book-image"
-      />
-      <div class="green-circle" />
-      read
-      <div class="book-title">${title}</div>
-      <div class="book-description" />
-    </div>
-  `;
-}
-
-/**
- * Shuffles array in place.
- * @param {Array} a items An array containing the items.
- */
-function shuffle(a) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-  return a;
 }
 
 {
@@ -193,10 +102,3 @@ function shuffle(a) {
 //     .then(json => console.log(json));
 // }
 // search()
-
-// helpers
-String.prototype.toProperCase = function() {
-  return this.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-};
