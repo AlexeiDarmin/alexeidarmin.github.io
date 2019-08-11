@@ -41,20 +41,62 @@ function processBooks(books) {
   }, {});
 
   const categoryList = dictToList(aggrCategories).sort((a, b) => {
-    if (a.value > b.value) return -1
-    else return 1
-  })
+    if (a.value > b.value) return -1;
+    else return 1;
+  });
 
-  const totalCategories = categoryList.reduce((aggr, item) => aggr + item.value, 0)
+  const totalCategories = categoryList.reduce(
+    (aggr, item) => aggr + item.value,
+    0
+  );
   categoryList.forEach((item, index) => {
-    categoryList[index] = Object.assign({}, item, { percentage: ((item.value / totalCategories)*100).toFixed(2)})
-  })
+    categoryList[index] = Object.assign({}, item, {
+      percentage: Math.round((item.value / totalCategories) * 100)
+    });
+  });
 
-  console.log('categoryList:', categoryList)
+  populateGenreCard(categoryList);
+  console.log("categoryList:", categoryList);
 
-  console.log('totaaal:', totalCategories)
+  console.log("totaaal:", totalCategories);
   console.log("missingCategory", missingCategory);
   console.log("category total!", aggrCategories);
+}
+
+function populateGenreCard(categoryList) {
+  console.log("things are happening!");
+  const top10 = categoryList.slice(0, 5);
+
+  const contentElement = document.getElementById("genre-table");
+  console.log(top10, contentElement);
+  top10.forEach(item => inject(createRow(item), contentElement));
+
+  // Drawing a pie chart with padding and labels that are outside the pie
+  new Chartist.Pie(
+    ".genre-chart",
+    {
+      series: top10.map(item => item.value),
+      labels: top10.map(item => item.category)
+    },
+    {
+      chartPadding: 30,
+      labelOffset: 50,
+      labelDirection: "explode",
+    }
+  );
+}
+
+
+function inject(HTML, domNode) {
+  domNode.innerHTML += HTML;
+}
+
+function createRow(item) {
+  return `<div class="genre-row">
+  <div class="genre-col first">${item.category}</div>
+  <div class="genre-col second">${item.value}</div>
+  <div class="genre-col third">${item.percentage}%</div>
+</div>`;
 }
 
 function dictToList(dict) {
@@ -65,7 +107,7 @@ function dictToList(dict) {
       arr.push({ category: key, value: dict[key] });
     }
   }
-  return arr
+  return arr;
 }
 
 // executes a list of promises, once they are complete then executes the callback cb.
