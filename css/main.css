@@ -403,7 +403,7 @@ h1 {
   border-radius: 8px;
   border: 1px solid #cecece;
   margin: 8px;
-  padding: 12px;
+  padding: 12px 12px 8px 12px;
   box-sizing: border-box;
 }
 
@@ -445,7 +445,7 @@ h1 {
 }
 
 .hamburger-header {
-  background: linear-gradient(to bottom right, #c4f1c9ba, white);
+  background: linear-gradient(to bottom right, #c4f1c9ba, #97ec96);;
   padding: 12px;
   border-bottom: 1px solid #cecece;
   display: flex;
@@ -464,6 +464,7 @@ h1 {
   padding: 8px;
   border-bottom: 1px solid #cecece;
   margin: 0;
+  letter-spacing: 0.25px;
 }
 
 .menu-item-root {
@@ -484,7 +485,7 @@ h1 {
 }
 
 .summary-icon {
-  background: #d6f6da;
+  background: linear-gradient(to bottom right, #c4f1c9ba, #97ec96);;
   margin-left: -21px;
   padding: 12px;
   padding-left: 36px;
@@ -539,4 +540,8 @@ h1 {
 .genre-chart {
   display: flex;
   margin: 0 auto;
+}
+
+.content-card-green { 
+  background: linear-gradient(to bottom right, #ffffffba, #f4fff4);
 }

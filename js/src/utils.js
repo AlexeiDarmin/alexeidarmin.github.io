@@ -48,3 +48,10 @@ String.prototype.toProperCase = function() {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
+
+
+function createAcronym(sentance) {
+    debugger
+    console.log('acronym: ', sentance.split(' ').map(word => word[0].toUpperCase()).reduce((a, b) => a + b, ''))
+  return sentance.split(' ').map(word => word.charAt(0).toUpperCase()).reduce((a, b) => a + b, '')
+}

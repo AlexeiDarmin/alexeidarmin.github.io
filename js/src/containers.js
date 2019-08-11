@@ -6,17 +6,21 @@ function populateGenreCard(categoryList) {
   const contentElement = document.getElementById("genre-table");
   top10.forEach(item => inject(createRow(item), contentElement));
 
+  const labels = top10.map(item => createAcronym(item.category))
+  console.log('labels:', labels)
   // Drawing a pie chart with padding and labels that are outside the pie
-  new Chartist.Pie(
+  new Chartist.Bar(
     ".genre-chart",
     {
       series: top10.map(item => item.value),
-      labels: top10.map(item => item.category)
+      labels
     },
     {
-      chartPadding: 30,
-      labelOffset: 50,
-      labelDirection: "explode"
+      distributeSeries: true
+
+      //   chartPadding: 30,
+      //   labelOffset: 50,
+      //   labelDirection: "explode"
     }
   );
 }
