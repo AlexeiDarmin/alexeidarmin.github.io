@@ -386,27 +386,40 @@ h1 {
   display: flex;
   justify-content: center;
   margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 150px;
+  max-width: 200px;
+  text-align: right;
 }
 
 .content-card {
   background: white;
   border-radius: 8px;
   border: 1px solid #cecece;
-  max-width: 200px;
   margin: 8px;
   padding: 12px;
-  text-align: right;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
 }
 
 .content-card-number-container {
   font-size: 1.75em;
   display: flex;
   align-items: center;
+  border-top: 1px solid #cecece;
+  padding: 8px 8px 0 8px;
+  margin-top: 4px;
+}
+
+.content-card-title {
+  padding-right: 8px;
+  font-weight: 100;
+  margin-top: -4px;
 }
 
 .content-card-number {
@@ -463,4 +476,28 @@ h1 {
 
 .content-margin {
   margin: 0 16px;
+}
+
+.fas,
+.far {
+  color: #616161;
+}
+
+.summary-icon {
+  background: #d6f6da;
+  margin-left: -21px;
+  padding: 12px;
+  padding-left: 36px;
+  border: 1px solid #cecece;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-sizing: border-box;
+  margin-right: 8px;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 8px;
 }
