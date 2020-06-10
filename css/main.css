@@ -293,8 +293,12 @@ h1 {
   margin: 32px 0 32px calc(25% + 32px);
   font-size: 3em;
   letter-spacing: 0.05em;
-
+  font-family: 'Bitter', serif;
   /* border: 1px solid black; */
+}
+
+a {
+  color: #00580f;
 }
 
 .sub-header {
