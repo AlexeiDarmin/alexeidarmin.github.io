@@ -1,30 +1,47 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, FormControlLabel, Link, Switch, Theme } from '@mui/material';
 import { primaryColors } from '../utils/theme';
 
+const buttonStyles = (theme: Theme) => ({
+  marginX: theme.spacing(1)
+})
+
 function Navigation() {
+  const [isNightMode, setIsNightMode] = useState(false)
+
+
   return (
     <Box sx={{
-      background: 'black',
+      // background: 'black',
       display: 'flex',
       justifyContent: 'center'
     }}>
-      <Box sx={{
+      <Box sx={theme => ({
         width: 1000,
-        background: '#3f3f3f',
-        display: 'flex'
-      }}>
+        // background: '#3f3f3f',
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: theme.spacing(2)
+      })}>
 
 
       <Box sx={ theme => ({
         color: primaryColors.orange,
         fontSize: theme.typography.h5,
         fontWeight: 600,
-        padding: theme.spacing(2)
       })}>Alexei Darmin</ Box>
 
-      <Box className="right-nav">
-        <Button>About</Button>
+      <Box >
+        <Button variant="outlined" sx={buttonStyles}>Blog</Button>
+        <Button variant="outlined" sx={buttonStyles}>About</Button>
+        <Button variant="outlined" sx={buttonStyles}>Books</Button>
+        <FormControlLabel 
+          control={<Switch checked={isNightMode} onChange={(_, value) => setIsNightMode(value)} />} 
+          label={isNightMode ? "night mode" : "day mode"} 
+          sx={{
+            width: 140
+          }}
+        />
       </Box>
       </Box>
     </Box>

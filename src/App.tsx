@@ -1,19 +1,26 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+
 import Navigation from './components/Navigation';
+import { Box, Typography } from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%'
+    }}>
       <Navigation />
-      <header className="App-header">
-        <p>
-          🚧 under construction 🚧
-        </p>
+      <Box sx={{
+        flex: 2,
+        background: 'gray'
+      }}>
+          <Typography variant="body1"></Typography>🚧 under construction 🚧
+      </Box>
 
-      </header>
-    </div>
+
+    </Box>
   );
 }
 
