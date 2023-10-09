@@ -25,19 +25,19 @@ function Navigation() {
       })}>
 
 
-      <Box sx={ theme => ({
+      {/* <Box sx={ theme => ({
         // color: theme.palette.primary.contrastText,
         fontSize: theme.typography.h6,
         fontWeight: 100,
         color: theme.palette.primary.main,
         display: 'flex',
         alignItems: 'center'
-      })}>Alexei Darmin</ Box>
+      })}>Alexei Darmin</ Box> */}
 
       <Box >
-        <Button variant="text" sx={buttonStyles}>About</Button>
+        {/* <Button variant="text" sx={buttonStyles}>About</Button>
         <Button variant="text" sx={buttonStyles}>Blog</Button>
-        <Button variant="text" sx={buttonStyles}>Bookshelf</Button>
+        <Button variant="text" sx={buttonStyles}>Bookshelf</Button> */}
         {/* <FormControlLabel 
           control={<Switch checked={isNightMode} onChange={(_, value) => setIsNightMode(value)} />} 
           label={isNightMode ? "night mode" : "day mode"} 
