@@ -14,7 +14,6 @@ function App() {
       <Navigation />
       <Box sx={{
         flex: 2,
-        background: '#f2fff6',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
