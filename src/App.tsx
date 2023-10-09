@@ -14,9 +14,18 @@ function App() {
       <Navigation />
       <Box sx={{
         flex: 2,
-        background: 'gray'
+        background: '#f2fff6',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}>
-          <Typography variant="body1"></Typography>🚧 under construction 🚧
+
+      <Typography variant="h1" sx={theme => ({
+        fontSize: theme.typography.h4
+      })}>
+        I'm Alexei Darmin <br />
+        A Frontend Engineer based in Toronto, Canada
+      </Typography >
       </Box>
 
 

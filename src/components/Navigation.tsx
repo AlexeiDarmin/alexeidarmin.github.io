@@ -28,19 +28,20 @@ function Navigation() {
       <Box sx={ theme => ({
         color: primaryColors.orange,
         fontSize: theme.typography.h5,
-        fontWeight: 600,
+        // fontWeight: 600,
       })}>Alexei Darmin</ Box>
 
       <Box >
-        <Button variant="outlined" sx={buttonStyles}>Blog</Button>
         <Button variant="outlined" sx={buttonStyles}>About</Button>
-        <Button variant="outlined" sx={buttonStyles}>Books</Button>
+        <Button variant="outlined" sx={buttonStyles}>Blog</Button>
+        <Button variant="outlined" sx={buttonStyles}>Bookshelf</Button>
         <FormControlLabel 
           control={<Switch checked={isNightMode} onChange={(_, value) => setIsNightMode(value)} />} 
           label={isNightMode ? "night mode" : "day mode"} 
-          sx={{
-            width: 140
-          }}
+          sx={theme => ({
+            width: 140,
+            ml: theme.spacing(1)
+          })}
         />
       </Box>
       </Box>
