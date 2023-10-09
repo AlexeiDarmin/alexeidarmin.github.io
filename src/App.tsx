@@ -13,18 +13,31 @@ function App() {
     }}>
       <Navigation />
       <Box sx={{
-        flex: 2,
+        // flex: 2,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        // alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column'
       }}>
 
       <Typography variant="h1" sx={theme => ({
-        fontSize: theme.typography.h4
+        // fontSize: theme.typography.h4
+        display: 'flex',
+        justifyContent: 'center',
+        mt: theme.spacing(7),
+        fontWeight: 600
       })}>
-        I'm Alexei Darmin <br />
-        A Frontend Engineer based in Toronto, Canada
+        Alexei Darmin
       </Typography >
+      <br />
+      <Typography variant='h2' sx={{
+        fontSize: '3rem',
+        display: 'flex',
+        justifyContent: 'center',
+        textAlign: 'center'
+      }}>
+        Frontend Engineer
+      </Typography>
       </Box>
 
 
