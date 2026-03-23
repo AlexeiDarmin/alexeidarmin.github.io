@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": []
+    "types": ["react", "react-dom"]
   },
   "include": ["src"]
 }
