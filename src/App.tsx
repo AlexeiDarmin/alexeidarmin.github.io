@@ -1,51 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-import Navigation from './components/Navigation';
-import { Box, Button, Typography } from '@mui/material';
-
-function App() {
+export default function App() {
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%'
-    }}>
-      <Navigation />
-      <Box sx={{
-        // flex: 2,
+    <Box
+      sx={{
         display: 'flex',
-        // alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
-      }}>
-
-        <Typography variant="h1" sx={theme => ({
-          // fontSize: theme.typography.h4
-          display: 'flex',
-          justifyContent: 'center',
-          mt: theme.spacing(7),
-          fontWeight: 600
-        })}>
-          Alexei Darmin
-        </Typography >
-        <br />
-        <Typography variant='h2' sx={{
-          fontSize: '3rem',
-          display: 'flex',
-          justifyContent: 'center',
-          textAlign: 'center'
-        }}>
-          Frontend Engineer
-        </Typography>
-
-        {/* <Button variant="outlined" sx={ theme => ({
-            alignSelf: 'center',
-            mt: theme.spacing(2)
-          })}>About me</Button> */}
-      </Box>
+        minHeight: '100vh',
+        textAlign: 'center',
+        px: 2,
+      }}
+    >
+      <Typography variant="h1" gutterBottom>
+        Alexei Darmin
+      </Typography>
+      <Typography variant="body1" color="text.secondary">
+        Website coming soon.
+      </Typography>
     </Box>
   );
 }
-
-export default App;

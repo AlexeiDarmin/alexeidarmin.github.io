@@ -1,55 +1,64 @@
-import React, { useState } from 'react';
-import { Box, Button, FormControlLabel, Link, Switch, Theme, colors } from '@mui/material';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-const buttonStyles = (theme: Theme) => ({
-  marginX: theme.spacing(1)
-})
+const navItems = [
+  { label: 'Home', path: '/' },
+  { label: 'Blog', path: '/blog' },
+  { label: 'Labs', path: '/labs' },
+  { label: 'About', path: '/about' },
+];
 
-function Navigation() {
-  const [isNightMode, setIsNightMode] = useState(false)
-
+export default function Navigation() {
+  const { pathname } = useLocation();
 
   return (
-    <Box sx={ theme => ({
-      // background: 'black',
-      display: 'flex',
-      justifyContent: 'center',
-      borderBottom: `1px solid ${theme.palette.primary.main}`
-    })}>
-      <Box sx={theme => ({
-        width: 1000,
-        // background: '#3f3f3f',
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: theme.spacing(1.5)
-      })}>
-
-
-      {/* <Box sx={ theme => ({
-        // color: theme.palette.primary.contrastText,
-        fontSize: theme.typography.h6,
-        fontWeight: 100,
-        color: theme.palette.primary.main,
-        display: 'flex',
-        alignItems: 'center'
-      })}>Alexei Darmin</ Box> */}
-
-      <Box >
-        {/* <Button variant="text" sx={buttonStyles}>About</Button>
-        <Button variant="text" sx={buttonStyles}>Blog</Button>
-        <Button variant="text" sx={buttonStyles}>Bookshelf</Button> */}
-        {/* <FormControlLabel 
-          control={<Switch checked={isNightMode} onChange={(_, value) => setIsNightMode(value)} />} 
-          label={isNightMode ? "night mode" : "day mode"} 
-          sx={theme => ({
-            width: 140,
-            ml: theme.spacing(1)
+    <AppBar
+      position="static"
+      color="transparent"
+      elevation={0}
+      sx={{ borderBottom: 1, borderColor: 'divider' }}
+    >
+      <Toolbar
+        sx={{ maxWidth: 900, width: '100%', mx: 'auto', px: { xs: 2, sm: 3 } }}
+      >
+        <Typography
+          variant="h6"
+          component={RouterLink}
+          to="/"
+          sx={{
+            fontWeight: 700,
+            color: 'text.primary',
+            textDecoration: 'none',
+            mr: 4,
+          }}
+        >
+          AD
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          {navItems.map(({ label, path }) => {
+            const isActive =
+              path === '/' ? pathname === '/' : pathname.startsWith(path);
+            return (
+              <Button
+                key={path}
+                component={RouterLink}
+                to={path}
+                size="small"
+                sx={{
+                  color: isActive ? 'primary.main' : 'text.secondary',
+                  fontWeight: isActive ? 600 : 400,
+                }}
+              >
+                {label}
+              </Button>
+            );
           })}
-        /> */}
-      </Box>
-      </Box>
-    </Box>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
-
-export default Navigation;
